@@ -47,34 +47,52 @@ public class DialogHelper
     
     /**
      * Creates a text box that allows a user to type large text and enable to scroll
-     * Counts and stores the message typed back to the method
+     * Counts and stores the message typed back to the 
+     * Validates the character count and loops until correct count is inputted 
      * @param numMessages
      * @return 
      */
     public static String setUpMessage(int numMessages)
     {
-        JTextArea textBox = new JTextArea(10,40);     //Creates a new textbox for typing message
-        textBox.setBackground(Color.black);                  //Settings for the textbox
-        textBox.setForeground(Color.yellow);
-        textBox.setWrapStyleWord(true);
-        textBox.setLineWrap(true);
-        
-        Object[] customButton = {"Send","Exit"};                //Custom buttons
-        
-        int textField = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), 
-                            "Message: " + numMessages, JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE, null, 
-                            customButton, customButton[0]);
-            if(textField == 0)
-            {
-                return textBox.getText();
-            }
-            else
-            {
-            return "Program exited without sending a message.";
-        }   
-    } 
+            JTextArea textBox = new JTextArea(10,30); //Creates a new textbox for typing message
+       
+            textBox.setBackground(Color.black);                  //Settings for the textbox
+            textBox.setForeground(Color.yellow);
+            textBox.setWrapStyleWord(true);
+            textBox.setLineWrap(true);
 
+            Object[] customButton = {"Send","Exit"};                //Custom buttons to replace 'OK' and 'Cancel'
+        
+            while(true)
+            {
+            int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
+                                                        + numMessages, JOptionPane.DEFAULT_OPTION,
+                                                        JOptionPane.INFORMATION_MESSAGE, null, 
+                                                        customButton, customButton[0]);
+                if(sendMessage == 0)
+                {
+                   String text = textBox.getText();                //Stores input messages in 'text' and returned if user clicks "Send"
+
+                    if(text.length() > 250)
+                    {
+                        JOptionPane.showMessageDialog(null, 
+                                                        "Please enter a message of less than 250 characters");   
+                        return null;      
+                    }
+                    else
+                    {
+                         JOptionPane.showMessageDialog(null, "Message sent");
+                            return text;
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
+                        return null;
+            }
+        }
+    }
+    
     /**
      * Creates and stores a unique_ID for each message sent
      * @return
