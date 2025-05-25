@@ -20,5 +20,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set up Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 &
+
       - name: Build and test with Maven
         run: mvn clean install
