@@ -24,9 +24,11 @@ public class Messaging
                             
         String[] chat = new String[messageLimit];
         String[] msgID = new String[messageLimit];
+        String[] recipientNum = new String[messageLimit];
         
         for(int i = 0; i < messageLimit; i++)
         {
+            recipientNum[i] = DialogHelper.recipientNumber();
             chat[i] = DialogHelper.setUpMessage(i + 1);
             msgID[i] = DialogHelper.messageID();
             
