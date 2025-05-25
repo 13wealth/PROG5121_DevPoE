@@ -26,23 +26,17 @@ public class Registration
         String cellRegex = "^\\+27[1-9]\\d{8}$";
         if(Pattern.matches(cellRegex, cellPhone))
         {
-            int option = JOptionPane.showConfirmDialog(null, "Cellphone number successfully added.\nContinue?",
-                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-                if(option != JOptionPane.YES_OPTION)
-                    {
-                        JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                        "EXIT",JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                }    
-            return true;
+            int option = JOptionPane.showConfirmDialog(null, 
+                                                        "Cellphone number successfully added.\nContinue?",
+                                                        "SUCCESS",JOptionPane.YES_NO_OPTION,1);
+                    return true;
         }
         else
         {
             JOptionPane.showMessageDialog(null, 
-                    "Cellphone number incorrectly formatted or does not contain international code.",
-                    "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-            
-            return false;
+                                "Cellphone number incorrectly formatted or does not contain international code.",
+                                "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
+                    return false;
         }
     }
     /**
@@ -57,14 +51,8 @@ public class Registration
         if(Pattern.matches(userNameRegex, username))
         {
             int option = JOptionPane.showConfirmDialog(null, "Username successfully captured.\nContinue?",
-                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-            if(option != JOptionPane.YES_OPTION)
-                {
-                    JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
-                    System.exit(0);
-                }    
-            return true;
+                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);         
+                    return true;
         }
         else
         {
