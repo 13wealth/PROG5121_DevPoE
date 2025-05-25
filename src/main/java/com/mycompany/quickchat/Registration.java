@@ -28,21 +28,13 @@ public class Registration
         {
             int option = JOptionPane.showConfirmDialog(null, "Cellphone number successfully added.\nContinue?",
                                             "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-            DialogHelper.exitIfNotOk(option);
-            /*if(option != JOptionPane.YES_OPTION)
-            {
-            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-            "EXIT",JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);*/
-                  
-            return true;
+                    return true;
         }
         else
         {
             JOptionPane.showMessageDialog(null, 
                     "Cellphone number incorrectly formatted or does not contain international code.",
                     "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-            
             return false;
         }
     }
@@ -58,14 +50,8 @@ public class Registration
         if(Pattern.matches(userNameRegex, username))
         {
             int option = JOptionPane.showConfirmDialog(null, "Username successfully captured.\nContinue?",
-                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-            if(option != JOptionPane.YES_OPTION)
-                {
-                    JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
-                    System.exit(0);
-                }    
-            return true;
+                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);         
+                    return true;
         }
         else
         {
