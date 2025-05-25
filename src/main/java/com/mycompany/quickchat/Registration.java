@@ -26,16 +26,17 @@ public class Registration
         String cellRegex = "^\\+27[1-9]\\d{8}$";
         if(Pattern.matches(cellRegex, cellPhone))
         {
-            int option = JOptionPane.showConfirmDialog(null, "Cellphone number successfully added.\nContinue?",
-                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);
+            int option = JOptionPane.showConfirmDialog(null, 
+                                                        "Cellphone number successfully added.\nContinue?",
+                                                        "SUCCESS",JOptionPane.YES_NO_OPTION,1);
                     return true;
         }
         else
         {
             JOptionPane.showMessageDialog(null, 
-                    "Cellphone number incorrectly formatted or does not contain international code.",
-                    "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-            return false;
+                                "Cellphone number incorrectly formatted or does not contain international code.",
+                                "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
+                    return false;
         }
     }
     /**
