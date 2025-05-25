@@ -5,9 +5,9 @@
 package com.mycompany.quickchat;
 
 import java.awt.Color;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * @author RC_Student_lab 
@@ -54,8 +54,7 @@ public class DialogHelper
      */
     public static String setUpMessage(int numMessages)
     {
-            JTextArea textBox = new JTextArea(10,30); //Creates a new textbox for typing message
-       
+            JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
             textBox.setBackground(Color.black);                  //Settings for the textbox
             textBox.setForeground(Color.yellow);
             textBox.setWrapStyleWord(true);
@@ -71,13 +70,13 @@ public class DialogHelper
                                                         customButton, customButton[0]);
                 if(sendMessage == 0)
                 {
-                   String text = textBox.getText();                //Stores input messages in 'text' and returned if user clicks "Send"
-
+                   String text = textBox.getText();                /*Stores input messages in 'text' and 
+                                                                     returned if user clicks "Send"*/
                     if(text.length() > 250)
                     {
                         JOptionPane.showMessageDialog(null, 
-                                                        "Please enter a message of less than 250 characters");   
-                        return null;      
+                                                        "Please enter a message of less than 250 characters"); 
+                        continue;                                  //Loops user back to retype instead of reseting 
                     }
                     else
                     {
@@ -95,18 +94,47 @@ public class DialogHelper
     
     /**
      * Creates and stores a unique_ID for each message sent
+     * Assisted by ChatGPT (2025, May 25) to generate 1 random non-repeating message ID.
      * @return
      */
-    public static String checkMessageID()
+    public static String messageID()
     {
-        long messageID = (long)(Math.random()* 9_000_000_000L) + 1_000_000_000L;
-        return Long.toString(messageID);
+        Random genID = new Random();
+        
+        long uniqueID = 1000000000L + (long)(genID.nextDouble() * 9000000000L);
+            return "" + uniqueID;
     }
+}
 
+    /**
+     * Contains the cell number of the recipient
+     * Number entered is controled by regular expression for:
+     * - Has to be 10 digits long
+     * - Has an international code
+     * @param cellPhone
+     * @return
+     *
+    public boolean recipientNumber(String cellPhone)
+    {
+        String cellRegex = "^\\+27[1-9]\\d{8}$";
+        if(Pattern.matches(cellRegex, cellPhone))
+        {
+            int option = JOptionPane.showConfirmDialog(null, "Cellphone number successfully added.\nContinue?",
+                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);
+                if(option != JOptionPane.YES_OPTION)
+                    {
+                        JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
+                                                        "EXIT",JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
 }
 
 /**
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
-* 
+* OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
+*/
+/**
+* References:
+* OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
+* OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 */

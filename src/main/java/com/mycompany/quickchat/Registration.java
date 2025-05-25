@@ -28,12 +28,13 @@ public class Registration
         {
             int option = JOptionPane.showConfirmDialog(null, "Cellphone number successfully added.\nContinue?",
                                             "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-                if(option != JOptionPane.YES_OPTION)
-                    {
-                        JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                        "EXIT",JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
-                }    
+            DialogHelper.exitIfNotOk(option);
+            /*if(option != JOptionPane.YES_OPTION)
+            {
+            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
+            "EXIT",JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);*/
+                  
             return true;
         }
         else

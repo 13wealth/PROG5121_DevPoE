@@ -20,7 +20,7 @@ public class Messaging
                                             before we can use it in the for-loop and as element size*/
         int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
                                     "Please enter number of messages you want to send: "));
-                            //UIHelper.exitIfCancelled(messageLimit);
+                            //DialogHelper.exitIfNotOk(messageLimit);
                             
         String[] chat = new String[messageLimit];
         String[] msgID = new String[messageLimit];
@@ -28,7 +28,8 @@ public class Messaging
         for(int i = 0; i < messageLimit; i++)
         {
             chat[i] = DialogHelper.setUpMessage(i + 1);
-            msgID[i] = DialogHelper.checkMessageID();
+            msgID[i] = DialogHelper.messageID();
+            
         }
     }
     
