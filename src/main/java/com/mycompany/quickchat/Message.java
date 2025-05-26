@@ -5,11 +5,17 @@
 package com.mycompany.quickchat;
 
 import java.awt.Color;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author RC_Student_lab 
@@ -17,6 +23,7 @@ import javax.swing.JTextArea;
  */
 public class Message 
 {
+    public static ArrayList<String> sentMessages = new ArrayList<>();
     /**
      * Creates and stores a unique_ID for each message sent
      * Assisted by ChatGPT (2025, May 25) to generate 1 random non-repeating message ID.
@@ -36,7 +43,7 @@ public class Message
      * - Has an international code
      * @return
      */
-    public static String recipientNumber()
+    public static String checkRecipientCell()
     {
         String cellRegex = "^\\+27[1-9]\\d{8}$";
 
@@ -69,7 +76,7 @@ public class Message
      * @param recipient
      * @return 
      */
-    public static String setUpMessage(int numMessages, String recipient)
+    public static String SentMessage(int numMessages, String recipient)
     {
         JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
         textBox.setBackground(Color.black);                  //Settings for the textbox
@@ -100,12 +107,13 @@ public class Message
                         }
                         else
                         {
-                            String id = messageID();
-                            String hash = messageHash(id, numMessages, text);
+                            String id = checkMessageID();
+                            String hash = createMessageHash(id, numMessages, text);
                             
                             JOptionPane.showMessageDialog(null, "Message sent!\n\nMessageID: " + id + 
                                                           "\nMessage Hash: " + hash + "\nRecipient: " + recipient +
                                                             "\nMessage: " + text);
+                                    sentMessages.add(text);
                                 return text;
                         }
                     }
@@ -133,7 +141,7 @@ public class Message
      * @param messageText
      * @return
      */
-    public static String messageHash(String messageID, int numMessages, String messageText)
+    public static String createMessageHash(String messageID, int numMessages, String messageText)
     {
         CharSequence idPrefix = messageID.subSequence(0, 2); /*Extracts the first two numbers
                                                                                of the message ID*/
@@ -141,13 +149,70 @@ public class Message
         String firstWord = words.length > 0 ? words[0] : "N/A";
         String lastWord = words.length > 1 ? words[words.length - 1] : firstWord;
         
-        String hash = String.format("%s:%d:%s%s", idPrefix, numMessages, firstWord, lastWord);
+        String hash = String.format("%s:%d:%s%s", idPrefix, 
+                                                        numMessages, 
+                                                        firstWord, 
+                                                        lastWord);
         return hash.toUpperCase();
     }
-}
+    
+    /**
+     * Stores all messages in JSON file once all have been sent
+     * Assisted by ChatGPT (2025, May 26) to create JSON dependency/import and method
+     */
+    public static void storeMessages(String[] messages) 
+    {
+        JSONArray messageList = new JSONArray();
+            
+            for (String message : messages) 
+            {
+                if (message != null && !message.isEmpty()) {
+                    JSONObject msgObject = new JSONObject();
+                    msgObject.put("message", message);
+                    messageList.put(msgObject);
+                }
+            }
+            try (FileWriter file = new FileWriter("messages.json")) 
+            {
+                file.write(messageList.toString(4));
+                file.flush();
+                System.out.println("Messages saved to JSON.");
+            } catch (Exception e) {
+                System.out.println("Error saving messages: " + e.getMessage());
+            }
+        }
+     
+    /**
+     * Send a list of messages that were send as the program was running
+     * Assisted by ChatGPT (2025, May 27) to build the printSentMEssages
+     */
+    public static void printSentMessages() 
+    {
+        StringBuilder allMessages = new StringBuilder();
+            
+            for (int i = 0; i < sentMessages.size(); i++) 
+            {
+                allMessages.append((i + 1)).append(". ").append(sentMessages.get(i)).append("\n");
+            }
 
+    JOptionPane.showMessageDialog(null, allMessages.toString(), 
+                                    "All Sent Messages", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Returns total number of messages sent while program was running
+     * @return
+     */
+    public static int returnTotalMessages()
+    {
+        JOptionPane.showMessageDialog(null, "Total messages sent: " + sentMessages.size());
+        return sentMessages.size();
+    }
+}
+    
 /**
 * References:
 * OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 * OpenAI. (2025, May 26). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
+* OpenAI. (2025, May 27). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 */
