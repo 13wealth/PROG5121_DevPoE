@@ -44,55 +44,7 @@ public class DialogHelper
             System.exit(0);
         }
     }
-    
-    /**
-     * Creates a text box that allows a user to type large text and enable to scroll
-     * Counts and stores the message typed back to the 
-     * Validates the character count and loops until correct count is inputted 
-     * @param numMessages
-     * @return 
-     */
-    public static String setUpMessage(int numMessages)
-    {
-        JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
-        textBox.setBackground(Color.black);                  //Settings for the textbox
-        textBox.setForeground(Color.yellow);
-        textBox.setWrapStyleWord(true);
-        textBox.setLineWrap(true);
 
-        Object[] customButton = {"Send Message","Store Message to Send later","Disregard Message"};                //Custom buttons to replace 'OK' and 'Cancel'
-        
-        while(true)
-        {
-            int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
-                                                        + numMessages, JOptionPane.DEFAULT_OPTION,
-                                                        JOptionPane.INFORMATION_MESSAGE, null, 
-                                                        customButton, customButton[0]);
-            
-                if(sendMessage == 0)
-                {
-                String text = textBox.getText();                   /*Stores input messages in 'text' and 
-                                                                     returned if user clicks "Send"*/
-                    if(text.length() > 250)
-                    {
-                        JOptionPane.showMessageDialog(null, 
-                                                 "Please enter a message of less than 250 characters"); 
-                            continue;                            //Loops user back to retype instead of reseting 
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, "Message sent");
-                        return text;
-                    }
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
-                        return null;
-            }
-        }
-    }
-    
     /**
      * Creates and stores a unique_ID for each message sent
      * Assisted by ChatGPT (2025, May 25) to generate 1 random non-repeating message ID.
@@ -105,7 +57,7 @@ public class DialogHelper
         long uniqueID = 1000000000L + (long)(genID.nextDouble() * 9000000000L);
             return "" + uniqueID;
     }
-
+    
     /**
      * Contains the cell number of the recipient
      * Number entered is controlled by regular expression for:
@@ -124,14 +76,10 @@ public class DialogHelper
                                                                Must contain the country code
                                                                Must be a valid South African cellphone number""",
                                                             "ENTER RECIPIENT CELLPHONE NUMBER",3);
-                        DialogHelper.exitIfCancelled(recipientNum);
+                                exitIfCancelled(recipientNum);
                 if(Pattern.matches(cellRegex, recipientNum))
                 {           
-                    int option = JOptionPane.showConfirmDialog(null, 
-                                                                "Cellphone number successfully added.\nContinue?",
-                                                                "SUCCESS",JOptionPane.YES_NO_OPTION,1);                    
-                        DialogHelper.exitIfNotOk(option);
-                            return recipientNum;
+                    return recipientNum;
                 }
                 else
                 {
@@ -141,7 +89,98 @@ public class DialogHelper
             }
         }
     }       
+
+    /**
+     * Creates a text box that allows a user to type large text and enable to scroll
+     * Counts and stores the message typed back to the 
+     * Validates the character count and loops until correct count is inputted 
+     * @param numMessages
+     * @return 
+     */
+    public static String setUpMessage(int numMessages)
+    {
+        JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
+        textBox.setBackground(Color.black);                  //Settings for the textbox
+        textBox.setForeground(Color.yellow);
+        textBox.setWrapStyleWord(true);
+        textBox.setLineWrap(true);
+                                                                //Custom buttons to replace 'OK' and 'Cancel'
+        Object[] customButton = {"Send Message",                //Button 0   
+                                 "Store Message to Send later", //Button 1
+                                 "Disregard Message"};          //Button 2
+        while(true)
+        {
+            int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
+                                                        + numMessages, JOptionPane.DEFAULT_OPTION,
+                                                        JOptionPane.INFORMATION_MESSAGE, null, 
+                                                        customButton, customButton[0]);
+                switch(sendMessage)
+                {
+                    case 0 ->                                   //Validates if user clicks Button 0
+                    {
+                        String text = textBox.getText();         /*Stores input messages in 'text' and 
+                                                                   returned if user clicks Button 0*/
+                        if(text.length() > 250)
+                        {
+                            JOptionPane.showMessageDialog(null, 
+                                                     "Please enter a message of less than 250 characters"); 
+                                continue;                       //Loops user back to retype instead of reseting 
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, "Message sent");
+                                return text;
+                        }
+                    }
+                    
+                    case 1 ->                                   //Validates if user clicks Button 1
+                    {
+                        JOptionPane.showMessageDialog(null, "Message stored and will be sent later");
+                            return "";
+                    }
+                   
+                    case 2,-1 ->                               //Validates if user clicks Button 2 or closes the box
+                    {
+                        JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
+                            return null;
+                    }
+                        
+                        
+            
+            
+            
+            
+            
+                    /*if(sendMessage == 0)
+                    {
+                    String text = textBox.getText();               /Stores input messages in 'text' and
+                    returned if user clicks "Send"
+                    if(text.length() > 250)
+                    {
+                    JOptionPane.showMessageDialog(null,
+                    "Please enter a message of less than 250 characters");
+                    continue;                           //Loops user back to retype instead of reseting
+                    }
+                    else
+                    {
+                    JOptionPane.showMessageDialog(null, "Message sent");
+                    return text;
+                    }
+                    }
+                    else if(sendMessage == 1)
+                    {
+                    JOptionPane.showMessageDialog(null, "Message stored and will be sent later");
+                    return "";
+                    }
+                    else
+                    {
+                    JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
+                    return null;*/
+            }
+        }
+    }
 }
+      
 /**
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
