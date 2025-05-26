@@ -8,6 +8,9 @@ import java.awt.Color;
 import javax.swing.*;
 import java.util.Random;
 import java.util.regex.Pattern;
+import org.json.JSONObject;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author RC_Student_lab 
@@ -82,14 +85,14 @@ public class DialogHelper
         {
             int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
                                                         + numMessages, JOptionPane.DEFAULT_OPTION,
-                                                        JOptionPane.INFORMATION_MESSAGE, null, 
-                                                        customButton, customButton[0]);
+                                                        JOptionPane.INFORMATION_MESSAGE,
+                                                        null, customButton, customButton[0]);
                 switch(sendMessage)
                 {
                     case 0 ->                                   //Validates if user clicks Button 0
                     {
-                        String text = textBox.getText();         /*Stores input messages in 'text' and 
-                                                                   returned if user clicks Button 0*/
+                        String text = textBox.getText();        /*Stores input messages in 'text' and 
+                                                                  returned if user clicks Button 0*/
                         if(text.length() > 250)
                         {
                             JOptionPane.showMessageDialog(null, 
@@ -98,12 +101,14 @@ public class DialogHelper
                         }
                         else
                         {
-                            JOptionPane.showMessageDialog(null, "Message sent");
-                                
+                            //JOptionPane.showMessageDialog(null, "Message sent");
+                            String recipient = recipientNumber();    
                             String id = messageID();
                             String hash = messageHash(id, numMessages, text);
                             
-                            JOptionPane.showMessageDialog(null, "Message Hash: \n" + hash);
+                            JOptionPane.showMessageDialog(null, "Message sent!\nMessageID: " + id + 
+                                                          "\nMessage Hash: " + hash + "\nRecipient: " + recipient +
+                                                            \n);
                                 return text;
                         }
                     }
@@ -124,8 +129,8 @@ public class DialogHelper
     }
 
     /**
-     * 
-     * Assisted by ChatGPT (2025, May 26) to cre
+     * Creates a unique message hash for every message sent
+     * Assisted by ChatGPT (2025, May 26) to create a message hash
      * @param messageID
      * @param numMessages
      * @param messageText
