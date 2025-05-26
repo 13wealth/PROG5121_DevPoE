@@ -5,9 +5,9 @@
 package com.mycompany.quickchat;
 
 import java.awt.Color;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * @author RC_Student_lab 
@@ -54,34 +54,34 @@ public class DialogHelper
      */
     public static String setUpMessage(int numMessages)
     {
-            JTextArea textBox = new JTextArea(10,30); //Creates a new textbox for typing message
-       
-            textBox.setBackground(Color.black);                  //Settings for the textbox
-            textBox.setForeground(Color.yellow);
-            textBox.setWrapStyleWord(true);
-            textBox.setLineWrap(true);
+        JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
+        textBox.setBackground(Color.black);                  //Settings for the textbox
+        textBox.setForeground(Color.yellow);
+        textBox.setWrapStyleWord(true);
+        textBox.setLineWrap(true);
 
-            Object[] customButton = {"Send","Exit"};                //Custom buttons to replace 'OK' and 'Cancel'
+        Object[] customButton = {"Send","Exit"};                //Custom buttons to replace 'OK' and 'Cancel'
         
-            while(true)
-            {
+        while(true)
+        {
             int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
                                                         + numMessages, JOptionPane.DEFAULT_OPTION,
                                                         JOptionPane.INFORMATION_MESSAGE, null, 
                                                         customButton, customButton[0]);
+            
                 if(sendMessage == 0)
                 {
-                   String text = textBox.getText();                //Stores input messages in 'text' and returned if user clicks "Send"
-
+                String text = textBox.getText();                   /*Stores input messages in 'text' and 
+                                                                     returned if user clicks "Send"*/
                     if(text.length() > 250)
                     {
                         JOptionPane.showMessageDialog(null, 
-                                                        "Please enter a message of less than 250 characters");   
-                        return null;      
+                                                 "Please enter a message of less than 250 characters"); 
+                            continue;                            //Loops user back to retype instead of reseting 
                     }
                     else
                     {
-                         JOptionPane.showMessageDialog(null, "Message sent");
+                        JOptionPane.showMessageDialog(null, "Message sent");
                             return text;
                     }
                 }
@@ -95,18 +95,55 @@ public class DialogHelper
     
     /**
      * Creates and stores a unique_ID for each message sent
+     * Assisted by ChatGPT (2025, May 25) to generate 1 random non-repeating message ID.
      * @return
      */
-    public static String checkMessageID()
+    public static String messageID()
     {
-        long messageID = (long)(Math.random()* 9_000_000_000L) + 1_000_000_000L;
-        return Long.toString(messageID);
+        Random genID = new Random();
+        
+        long uniqueID = 1000000000L + (long)(genID.nextDouble() * 9000000000L);
+            return "" + uniqueID;
     }
 
-}
+    /**
+     * Contains the cell number of the recipient
+     * Number entered is controlled by regular expression for:
+     * - Has to be 10 digits long
+     * - Has an international code
+     * @param cellPhone
+     * @return
+     */
+    public static String recipientNumber()
+    {
+        String cellRegex = "^\\+27[1-9]\\d{8}$";
 
+        while(true)
+        {
+            String recipientNum = JOptionPane.showInputDialog(null, """
+                                                               Must contain the country code
+                                                               Must be a valid South African cellphone number""",
+                                                            "ENTER RECIPIENT CELLPHONE NUMBER",3);
+                        DialogHelper.exitIfCancelled(recipientNum);
+                if(Pattern.matches(cellRegex, recipientNum))
+                {           
+                    int option = JOptionPane.showConfirmDialog(null, 
+                                                                "Cellphone number successfully added.\nContinue?",
+                                                                "SUCCESS",JOptionPane.YES_NO_OPTION,1);                    
+                        DialogHelper.exitIfNotOk(option);
+                            return recipientNum;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, 
+                                        "Cellphone number incorrectly formatted or does not contain international code.",
+                                        "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }       
+}
 /**
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
-* 
+* OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 */
