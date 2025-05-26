@@ -95,7 +95,6 @@ public class QuickChat
         }while (!loginSuccess);                                                                        
 
 //3. Messaging  
-        String menu;
         boolean quit = false;
         Messaging msgObj = new Messaging();        
                 
@@ -103,7 +102,7 @@ public class QuickChat
                                         " ",JOptionPane.INFORMATION_MESSAGE);
         while(!quit)
         {
-            menu = JOptionPane.showInputDialog("""
+           String menu = JOptionPane.showInputDialog("""
                                                SELECT AN OPTION
                                                (1) Send Message
                                                (2) Show recent messages 
@@ -116,14 +115,13 @@ public class QuickChat
             {
                 case "1" ->
                 {
-                    msgObj.sendMessage();
+                    msgObj.sendMessage();       //Full validation is messaging class
                 }
                 
                 case "2" ->
                 {
-                    msgObj.recentMessages();
+                    msgObj.recentMessages();    //Full validation is messaging class
                 }
-
                 case "3" -> quit = true;
             }
         }
@@ -135,8 +133,3 @@ public class QuickChat
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
 * 
 */
-
-  /*int messageLimit = msgObj.getMessageLimit();
-                    for (int i = 0; i < messageLimit; i++) 
-                    {
-                    msgObj.sendMessage();*/

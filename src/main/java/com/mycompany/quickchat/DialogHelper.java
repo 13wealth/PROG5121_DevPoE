@@ -60,7 +60,7 @@ public class DialogHelper
         textBox.setWrapStyleWord(true);
         textBox.setLineWrap(true);
 
-        Object[] customButton = {"Send","Exit"};                //Custom buttons to replace 'OK' and 'Cancel'
+        Object[] customButton = {"Send Message","Store Message to Send later","Disregard Message"};                //Custom buttons to replace 'OK' and 'Cancel'
         
         while(true)
         {
@@ -82,7 +82,7 @@ public class DialogHelper
                     else
                     {
                         JOptionPane.showMessageDialog(null, "Message sent");
-                            return text;
+                        return text;
                     }
                 }
                 else
