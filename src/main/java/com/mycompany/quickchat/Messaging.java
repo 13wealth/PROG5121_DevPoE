@@ -36,10 +36,7 @@ public class Messaging
     }
     
     public static void recentMessages()
-    {
-        /*JLabel textDisplay = new JLabel("Comin Soon.");
-        textDisplay.setHorizontalAlignment(0);*/
-        
+    {      
         JOptionPane.showMessageDialog(null, "Coming Soon.");    
     }
 }

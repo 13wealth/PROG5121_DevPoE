@@ -17,35 +17,6 @@ import java.util.regex.Pattern;
 public class DialogHelper 
 {
     /**
-     * Checks if the user cancelled/closed input on *JOptionPane.showInputDialog*
-     * Exits the program with a farewell message if input is null.
-     * @param input
-     */
-    public static void exitIfCancelled(String input)
-    {
-        if(input == null)
-        {
-            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
-    }
-        
-    /**
-     * Checks if the user clicked any other button except OK on *JOptionPane.showConfirmDialog*
-     * @param input
-     */
-    public static void exitIfNotOk(int input)
-    {
-        if(input != JOptionPane.OK_OPTION)
-        {
-            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
-                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
-    }
-
-    /**
      * Creates and stores a unique_ID for each message sent
      * Assisted by ChatGPT (2025, May 25) to generate 1 random non-repeating message ID.
      * @return
@@ -57,13 +28,12 @@ public class DialogHelper
         long uniqueID = 1000000000L + (long)(genID.nextDouble() * 9000000000L);
             return "" + uniqueID;
     }
-    
+
     /**
      * Contains the cell number of the recipient
      * Number entered is controlled by regular expression for:
      * - Has to be 10 digits long
      * - Has an international code
-     * @param cellPhone
      * @return
      */
     public static String recipientNumber()
@@ -129,6 +99,11 @@ public class DialogHelper
                         else
                         {
                             JOptionPane.showMessageDialog(null, "Message sent");
+                                
+                            String id = messageID();
+                            String hash = messageHash(id, numMessages, text);
+                            
+                            JOptionPane.showMessageDialog(null, "Message Hash: \n" + hash);
                                 return text;
                         }
                     }
@@ -143,40 +118,57 @@ public class DialogHelper
                     {
                         JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
                             return null;
-                    }
-                        
-                        
-            
-            
-            
-            
-            
-                    /*if(sendMessage == 0)
-                    {
-                    String text = textBox.getText();               /Stores input messages in 'text' and
-                    returned if user clicks "Send"
-                    if(text.length() > 250)
-                    {
-                    JOptionPane.showMessageDialog(null,
-                    "Please enter a message of less than 250 characters");
-                    continue;                           //Loops user back to retype instead of reseting
-                    }
-                    else
-                    {
-                    JOptionPane.showMessageDialog(null, "Message sent");
-                    return text;
-                    }
-                    }
-                    else if(sendMessage == 1)
-                    {
-                    JOptionPane.showMessageDialog(null, "Message stored and will be sent later");
-                    return "";
-                    }
-                    else
-                    {
-                    JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
-                    return null;*/
+                }
             }
+        }
+    }
+
+    /**
+     * 
+     * Assisted by ChatGPT (2025, May 26) to cre
+     * @param messageID
+     * @param numMessages
+     * @param messageText
+     * @return
+     */
+    public static String messageHash(String messageID, int numMessages, String messageText)
+    {
+        CharSequence idPrefix = messageID.subSequence(0, 2); /*Extracts the first two numbers
+                                                                               of the message ID*/
+        String[] words = messageText.trim().split("\\s+");
+        String firstWord = words.length > 0 ? words[0] : "N/A";
+        String lastWord = words.length > 1 ? words[words.length - 1] : firstWord;
+        
+        String hash = String.format("%s:%d:%s%s", idPrefix, numMessages, firstWord, lastWord);
+        return hash.toUpperCase();
+    }
+    
+    /**
+     * Checks if the user cancelled/closed input on *JOptionPane.showInputDialog*
+     * Exits the program with a farewell message if input is null.
+     * @param input
+     */
+    public static void exitIfCancelled(String input)
+    {
+        if(input == null)
+        {
+            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
+                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+        
+    /**
+     * Checks if the user clicked any other button except OK on *JOptionPane.showConfirmDialog*
+     * @param input
+     */
+    public static void exitIfNotOk(int input)
+    {
+        if(input != JOptionPane.OK_OPTION)
+        {
+            JOptionPane.showMessageDialog(null, "Thank you for visiting QuickChat",
+                                                    "EXIT",JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         }
     }
 }
@@ -185,4 +177,5 @@ public class DialogHelper
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
 * OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
+* OpenAI. (2025, May 26). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 */
