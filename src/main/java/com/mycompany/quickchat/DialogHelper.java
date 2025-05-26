@@ -68,8 +68,9 @@ public class DialogHelper
                                                         + numMessages, JOptionPane.DEFAULT_OPTION,
                                                         JOptionPane.INFORMATION_MESSAGE, null, 
                                                         customButton, customButton[0]);
-            if(sendMessage == 0)
-            {
+            
+                if(sendMessage == 0)
+                {
                 String text = textBox.getText();                   /*Stores input messages in 'text' and 
                                                                      returned if user clicks "Send"*/
                     if(text.length() > 250)
@@ -84,7 +85,7 @@ public class DialogHelper
                             return text;
                     }
                 }
-            else
+                else
                 {
                     JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
                         return null;
@@ -113,7 +114,6 @@ public class DialogHelper
      * @param cellPhone
      * @return
      */
-
     public static String recipientNumber()
     {
         String cellRegex = "^\\+27[1-9]\\d{8}$";
@@ -123,7 +123,7 @@ public class DialogHelper
             String recipientNum = JOptionPane.showInputDialog(null, """
                                                                Must contain the country code
                                                                Must be a valid South African cellphone number""",
-                                                            "INPUT RECIPIENT CELLPHONE NUMBER",3);
+                                                            "ENTER RECIPIENT CELLPHONE NUMBER",3);
                         DialogHelper.exitIfCancelled(recipientNum);
                 if(Pattern.matches(cellRegex, recipientNum))
                 {           
