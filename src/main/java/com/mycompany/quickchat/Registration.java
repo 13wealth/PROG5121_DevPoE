@@ -48,6 +48,7 @@ public class Registration
     public boolean checkUserName(String username)
     {
         String userNameRegex = "^(?=.*_)[a-zA-Z0-9_]{1,5}$";                                      
+        
         if(Pattern.matches(userNameRegex, username))
         {
             int option = JOptionPane.showConfirmDialog(null, "Username successfully captured.\nContinue?",
