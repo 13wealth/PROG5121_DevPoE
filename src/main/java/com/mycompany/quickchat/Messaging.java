@@ -28,9 +28,9 @@ public class Messaging
         
         for(int i = 0; i < messageLimit; i++)
         {
-            recipientNum[i] = DialogHelper.recipientNumber();
-            chat[i] = DialogHelper.setUpMessage(i + 1);
-            msgID[i] = DialogHelper.messageID();
+            recipientNum[i] = Message.recipientNumber();
+            chat[i] = Message.setUpMessage((i + 1), recipientNum[i]);
+            msgID[i] = Message.messageID();
             
         }
     }
