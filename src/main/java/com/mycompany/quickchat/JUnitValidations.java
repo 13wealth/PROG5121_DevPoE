@@ -4,19 +4,44 @@
  */
 package com.mycompany.quickchat;
 
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RC_Student_lab
  */
 public class JUnitValidations 
 {
-     public static String validateMessageLength(String text) 
+    public static boolean validateMessageLength(String text) 
      {
         if (text.length() > 250) {
-            return "Message exceeds 250 characters by 20, please reduce size.";
+            return true;
         } else {
-            return "Message ready to send";
+            return false;
         }
     }
-}
+     
+    public static boolean checkRecipientCell(String recipientNum)
+    {
+        String cellRegex = "^\\+27[1-9]\\d{8}$";
+       
+            return Pattern.matches(cellRegex, recipientNum);
+    }
 
+
+ public static boolean createMessageHash(String messageID, int numMessages, String messageText)
+    {
+        CharSequence idPrefix = messageID.subSequence(0, 2); 
+        
+        String[] words = messageText.trim().split("\\s+");
+        String firstWord = words.length > 0 ? words[0] : "N/A";
+        String lastWord = words.length > 1 ? words[words.length - 1] : firstWord;
+        
+        String hash = String.format("%s:%d:%s%s", idPrefix, 
+                                                        numMessages, 
+                                                        firstWord, 
+                                                        lastWord);
+        return true;
+    }
+}

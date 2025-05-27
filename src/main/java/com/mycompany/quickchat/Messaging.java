@@ -29,7 +29,7 @@ public class Messaging
         for(int i = 0; i < messageLimit; i++)
         {
             recipientNum[i] = Message.checkRecipientCell();
-            chat[i] = Message.SentMessage((i + 1), recipientNum[i]);
+            chat[i] = Message.SendMessage((i + 1), recipientNum[i]);
             msgID[i] = Message.checkMessageID(); 
         }
         Message.printSentMessages();

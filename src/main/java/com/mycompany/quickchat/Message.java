@@ -76,7 +76,7 @@ public class Message
      * @param recipient
      * @return 
      */
-    public static String SentMessage(int numMessages, String recipient)
+    public static String SendMessage(int numMessages, String recipient)
     {
         JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
         textBox.setBackground(Color.black);                  //Settings for the textbox
