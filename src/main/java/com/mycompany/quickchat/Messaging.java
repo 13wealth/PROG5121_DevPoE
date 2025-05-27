@@ -20,19 +20,21 @@ public class Messaging
                                             before we can use it in the for-loop and as element size*/
         int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
                                     "Please enter number of messages you want to send: "));
-                            //DialogHelper.exitIfNotOk(messageLimit);
                             
         String[] chat = new String[messageLimit];
         String[] msgID = new String[messageLimit];
         String[] recipientNum = new String[messageLimit];
         
+        
         for(int i = 0; i < messageLimit; i++)
         {
-            recipientNum[i] = DialogHelper.recipientNumber();
-            chat[i] = DialogHelper.setUpMessage(i + 1);
-            msgID[i] = DialogHelper.messageID();
-            
+            recipientNum[i] = Message.checkRecipientCell();
+            chat[i] = Message.SendMessage((i + 1), recipientNum[i]);
+            msgID[i] = Message.checkMessageID(); 
         }
+        Message.printSentMessages();
+        Message.returnTotalMessages();
+        Message.storeMessages(chat);
     }
     
     public static void recentMessages()
