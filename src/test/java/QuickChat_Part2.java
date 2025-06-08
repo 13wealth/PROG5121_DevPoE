@@ -4,7 +4,7 @@
  */
 
 import com.mycompany.quickchat.JUnitValidations;
-import com.mycompany.quickchat.Message;
+import com.mycompany.quickchat.MessageSettings;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,10 +17,10 @@ public class QuickChat_Part2
     @Test
     public void totalMessagesSent()
     {
-        Message.sentMessages.add("Hi Mike, can you join us for dinner tonight");
-        Message.sentMessages.add("Hi Keegan, did you recieve the payment?");
+        MessageSettings.sentMessages.add("Hi Mike, can you join us for dinner tonight");
+        MessageSettings.sentMessages.add("Hi Keegan, did you recieve the payment?");
 
-        assertEquals(2,Message.sentMessages.size());
+        assertEquals(2,MessageSettings.sentMessages.size());
     }
     
     @Test
