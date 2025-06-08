@@ -28,13 +28,13 @@ public class Messaging
         
         for(int i = 0; i < messageLimit; i++)
         {
-            recipientNum[i] = Message.checkRecipientCell();
-            chat[i] = Message.SendMessage((i + 1), recipientNum[i]);
-            msgID[i] = Message.checkMessageID(); 
+            recipientNum[i] = MessageSettings.checkRecipientCell();
+            chat[i] = MessageSettings.SendMessage((i + 1), recipientNum[i]);
+            msgID[i] = MessageSettings.checkMessageID(); 
         }
-        Message.printSentMessages();
-        Message.returnTotalMessages();
-        Message.storeMessages(chat);
+        MessageSettings.printSentMessages();
+        MessageSettings.returnTotalMessages();
+        MessageSettings.storeMessages(chat);
     }
     
     public static void recentMessages()
