@@ -20,16 +20,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Set up Xvfb
+      - name: Install Xvfb
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
-          export DISPLAY=:99
-          Xvfb :99 -screen 0 1024x768x24 &
-          sleep 3  # Give Xvfb time to start
+
+      - name: Run tests with Xvfb
+        run: xvfb-run --auto-servernum mvn test -Djava.awt.headless=false
 
       - name: Build with Maven
         run: mvn clean install
-
-      - name: Run test in headless mode
-        run: mvn test -Djava.awt.headless=true
