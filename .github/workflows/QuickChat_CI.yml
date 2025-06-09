@@ -1,4 +1,4 @@
-name: Java CI
+name: QuickChat CI
 
 on:
   push:
@@ -26,6 +26,10 @@ jobs:
           sudo apt-get install -y xvfb
           export DISPLAY=:99
           Xvfb :99 -screen 0 1024x768x24 &
+          sleep 3  # Give Xvfb time to start
 
-      - name: Build and test with Maven
+      - name: Build with Maven
         run: mvn clean install
+
+      - name: Run test in headless mode
+        run: mvn test -Djava.awt.headless=true
