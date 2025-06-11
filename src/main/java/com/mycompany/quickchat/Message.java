@@ -25,9 +25,15 @@ import org.json.JSONObject;
  */
 public class Message
 {
-    public static ArrayList<String> messageIDs = new ArrayList<>();
-    public static ArrayList<String> messageHashes = new ArrayList<>();
+    public static ArrayList<String> sentIDs = new ArrayList<>();
+    public static ArrayList<String> sentHashes = new ArrayList<>();
     public static ArrayList<String> sentMessages = new ArrayList<>();
+    public static ArrayList<String> storedIDs = new ArrayList<>();
+    public static ArrayList<String> storedHashes = new ArrayList<>();
+    public static ArrayList<String> storedMessages = new ArrayList<>();
+    public static ArrayList<String> disregardedIDs = new ArrayList<>();
+    public static ArrayList<String> disregardedHashes = new ArrayList<>();
+    public static ArrayList<String> disregardedMessages = new ArrayList<>();
     
     /**
      * Creates and stores a unique_ID for each message sent
@@ -105,7 +111,7 @@ public class Message
      * @param recipient
      * @return 
      */
-    public static String sendMessage(int numMessages, String recipient)
+    public static String sentMessage(int numMessages, String recipient)
     {
         JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
         textBox.setBackground(Color.black);                  //Settings for the textbox
@@ -126,7 +132,7 @@ public class Message
                 {
                     case 0 ->                                   //Button 0 <Send Message>
                     {
-                        String text = textBox.getText().trim(); /*Stores input messages in 'text' and returned 
+                            String text = textBox.getText(); /*Stores input messages in 'text' and returned 
                                                                   if user clicks Button 0. Trims whitespaces*/
                         if(text.length() > 250)
                         {
@@ -136,11 +142,11 @@ public class Message
                         }
                         else
                         {
-                            String uniqueID = checkMessageID(); //Creates a new message ID and hash to be held for storage
+                            String uniqueID = checkMessageID();
                             String messageHash = createMessageHash(uniqueID, numMessages, text);
                             
-                            messageIDs.add(uniqueID);         //Appends and Holds <uniqueID> for storage in JSON file
-                            messageHashes.add(messageHash);   //Appends and Holds <messageHash> for storage in JSON file
+                            sentIDs.add(uniqueID);            //Appends and Holds <uniqueID> for storage in JSON file
+                            sentHashes.add(messageHash);      //Appends and Holds <messageHash> for storage in JSON file
                             sentMessages.add(text);           //Appends and Holds <text> for storage in JSON file     
                             
                            
@@ -148,28 +154,35 @@ public class Message
                                                           "\nMessage Hash: " + messageHash + "\nRecipient: " + recipient +
                                                             "\nMessage: " + text);
                                     
-                                return text;
+                        return text;
                         }
                     }
                     
                     case 1 ->                               //Button 1(Store Message to Send later)
                     {
-                        String text = textBox.getText();
-                        String uniqueID = checkMessageID(); //Creates a new message ID and hash to be held for storage
-                        String messageHash = createMessageHash(uniqueID, numMessages, text);
+                            String text = textBox.getText();
+                            String uniqueID = checkMessageID(); 
+                            String messageHash = createMessageHash(uniqueID, numMessages, text);
                             
-                        messageIDs.add(uniqueID);       
-                        messageHashes.add(messageHash); 
-                        sentMessages.add(text);         
+                            storedIDs.add(uniqueID);       
+                            storedHashes.add(messageHash); 
+                            storedMessages.add(text);         
                             
                         JOptionPane.showMessageDialog(null, "Message stored and will be sent later");
-                            return "";
+                        return "";
                     }
                    
                     case 2,-1 ->                               //Button 2 or closes the dialog box
                     {
+                            String text = textBox.getText();
+                            String uniqueID = checkMessageID();
+                            String messageHash = createMessageHash(uniqueID, numMessages, text);
+                            
+                            disregardedIDs.add(uniqueID);       
+                            disregardedHashes.add(messageHash); 
+                            disregardedMessages.add(text);
                         JOptionPane.showMessageDialog(null, "Program exited without sending a message.");
-                            return null;
+                        return "";
                 }
             }
         }
@@ -203,68 +216,119 @@ public class Message
     }     
             
     /**
-     * Stores all messages in JSON file once all have been sent
+     * Stores all messages in JSON file once all have been sent, stored or disregarded
      * Assisted by ChatGPT (2025, May 26) to create JSON dependency/import and method
-     * @param messages
+     * @param sentIDs
+     * @param sentHashes
+     * @param sentMessages
+     * @param storedIDs
+     * @param storedHashes
+     * @param storedMessages
+     * @param disregardedIDs
+     * @param disregardedHashes
+     * @param disregardedMessages
      */
-    public static void storeMessages(String[] messages) 
+    public static void savedMessages(
+                                     ArrayList<String> sentIDs, 
+                                     ArrayList<String> sentHashes, 
+                                     ArrayList<String> sentMessages,
+                                     ArrayList<String> storedIDs, 
+                                     ArrayList<String> storedHashes, 
+                                     ArrayList<String> storedMessages,
+                                     ArrayList<String> disregardedIDs, 
+                                     ArrayList<String> disregardedHashes, 
+                                     ArrayList<String> disregardedMessages
+        )   
     {
-         JSONArray messageList = new JSONArray();                   //Creates a JSON array to store all message entries
-            
-            for (int i = 0; i < sentMessages.size(); i++) 
-            { 
-                String id = messageIDs.get(i);
-                String hash = messageHashes.get(i);
-                String message = sentMessages.get(i);
-            
-                if (message != null && !message.trim().isEmpty())     //Ignores holding any null, empty and whitespaces messages
-                {   
-                    JSONObject msgObj = new JSONObject();                 
-                    msgObj.put("Message ID",id);         //Stores the message with a message ID
-                    msgObj.put("Message Hash",hash);     //Stores the message with a message hash
-                    msgObj.put("Sent Message", message);        /*Lists the messages in the JSON file in this format 
-                                                                          Sent Message: <actual message text>*/
-                    messageList.put(msgObj);
-                }
-            }
-            try (FileWriter file = new FileWriter("storedMessages.json")) //Creates a file called sentMessages.json for writing
-            {
-                file.write(messageList.toString(4));
-                file.flush();                                       //Ensures all data is written to disk
-                System.out.println("Messages saved to JSON.");
-            } catch (Exception e)                                   //Catches and prints any errors if writing to the file fails
-            {
-                System.out.println("Error saving messages: " + e.getMessage());
-            }
+        JSONObject root = new JSONObject();
+
+        JSONArray sentArray = new JSONArray();                                  //Gets and holds sent messages
+        for (int i = 0; i < sentMessages.size(); i++) 
+        {
+            JSONObject msg = new JSONObject();                                  
+            msg.put("Message ID", sentIDs.get(i));
+            msg.put("Message Hash", sentHashes.get(i));
+            msg.put("Sent Message", sentMessages.get(i));
+            sentArray.put(msg);
         }
+
+        JSONArray storedArray = new JSONArray();                                //Gets and holds stored messages
+        for (int i = 0; i < storedMessages.size(); i++) 
+        {
+            JSONObject msg = new JSONObject();
+            msg.put("Message ID", storedIDs.get(i));
+            msg.put("Message Hash", storedHashes.get(i));
+            msg.put("Sent Message", storedMessages.get(i));
+            storedArray.put(msg);
+        }
+
+        JSONArray disregardedArray = new JSONArray();                           //Gets and holds disregarded messages
+        for (int i = 0; i < disregardedMessages.size(); i++) 
+        {
+            JSONObject msg = new JSONObject();
+            msg.put("Message ID", disregardedIDs.get(i));
+            msg.put("Message Hash", disregardedHashes.get(i));
+            msg.put("Sent Message", disregardedMessages.get(i));
+            disregardedArray.put(msg);
+        }
+        
+        root.put("sentMessages", sentArray);                            //Key to save sent messages
+        root.put("storedMessages", storedArray);                        //Key to save stored messages to be sent later
+        root.put("disregardedMessages", disregardedArray);              //Key to save disregarded messages
+
+        try (FileWriter file = new FileWriter("allMessages.json"))      
+        {
+            file.write(root.toString(4));                           
+            file.flush();                                                       //Ensure messaged are stored in disk
+            System.out.println("Messages saved to JSON file");
+        } 
+        catch (IOException e)                                                   //Error handling when saving
+        {
+            System.out.println("Error saving messages: " + e.getMessage());
+        }
+    }
      
     /**
-     * Creates a method that can read from the JSON file and return the String[]
+     * Reads data that is stored in a JSON file and returns it in an array list
      * Assisted by ChatGPT (2025, June 08) to create a file reading method 
-     * @param sentMessages 
+     * @param fileName
+     * @param arrayKey
      * @return
      */
-    public static String[] readFromFile(String sentMessages)
+    public static String[] readFromFile(String fileName, String arrayKey)
     {
-    ArrayList<String> readFile = new ArrayList<>(); /*Creates a list to temporarily store each message from 
-                                                      the file that will be converted to a String[] then return*/   
-    try 
-    {
-        String storedData = new String(Files.readAllBytes(Paths.get(sentMessages)));    /*Reads the whole file and returns
-                                                                                    bytes and wraps them to new String() to get text*/
-        JSONArray messageArray = new JSONArray(storedData);
-        
-            for (int i = 0; i < messageArray.length(); i++) 
-            {
-                JSONObject jObj = messageArray.getJSONObject(i); //Gets the ith object in the array (like { "Sent Message": "Hello" })
-                String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
-                String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
-                String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
-                String read = String.format("Message ID: %s | Hash: %s | Sent Message: %s", id, hash, msg);
-                
-                readFile.add(read);                                  //Adds that message to the messages list.
+        ArrayList<String> readFile = new ArrayList<>(); /*Creates a list to temporarily store each message from 
+                                                      the file that will be converted to a String[] then returned*/   
+        try 
+        {                       //Reads the whole file and returns bytes and wraps them to new String() to get text
+            String storedData = new String(Files.readAllBytes(Paths.get(fileName)));                
+            JSONObject root = new JSONObject(storedData);
+            
+            String[] keys = {"sentMessages", "storedMessages", "disregardedMessages"};
+            
+                for(String jsonKeys : keys)
+                {
+                    if (!root.has(jsonKeys))
+                    {
+                        System.out.println("No array with key '" + jsonKeys + "' found.");
+                            continue;
+                    }
+     
+                JSONArray messageArray = root.getJSONArray(jsonKeys);
+                for (int i = 0; i < messageArray.length(); i++) 
+                {
+                    JSONObject jObj = messageArray.getJSONObject(i); //Gets the ith object in the array (like { "Sent Message": "Hello" })
+                    String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
+                    String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
+                    String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
+                    
+                    String read = String.format("Message ID: %s | Hash: %s | Sent Message: %s", 
+                                                               id, hash, msg
+                    );
+                    readFile.add(read);                                  //Adds that message to the messages list.
+                }
             }
-        } 
+        }
         catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
         {                                                             //Prints the error message if anything goes wrong
             System.out.println("Error reading messages: " + e.getMessage());
