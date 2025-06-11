@@ -303,21 +303,18 @@ public class Message
         {                       //Reads the whole file and returns bytes and wraps them to new String() to get text
             String storedData = new String(Files.readAllBytes(Paths.get(fileName)));                
             JSONObject root = new JSONObject(storedData);
-            
-            String[] keys = {"sentMessages", "storedMessages", "disregardedMessages"};
-            
-                for(String jsonKeys : keys)
+        
+                if (!root.has(arrayKey))
                 {
-                    if (!root.has(jsonKeys))
-                    {
-                        System.out.println("No array with key '" + jsonKeys + "' found.");
-                            continue;
-                    }
+                    System.out.println("No array with key '" + arrayKey + "' found.");
+                        return new String[0];
+                }
      
-                JSONArray messageArray = root.getJSONArray(jsonKeys);
+                JSONArray messageArray = root.getJSONArray(arrayKey);
                 for (int i = 0; i < messageArray.length(); i++) 
                 {
-                    JSONObject jObj = messageArray.getJSONObject(i); //Gets the ith object in the array (like { "Sent Message": "Hello" })
+                    JSONObject jObj = messageArray.getJSONObject(i); /*Gets the ith object in the array 
+                                                                           (like { "Sent Message": "Hello" })*/
                     String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
                     String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
                     String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
@@ -325,12 +322,12 @@ public class Message
                     String read = String.format("Message ID: %s | Hash: %s | Sent Message: %s", 
                                                                id, hash, msg
                     );
-                    readFile.add(read);                                  //Adds that message to the messages list.
+                    readFile.add(read);                                 //Adds that message to the messages list.
                 }
-            }
+        
         }
-        catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
-        {                                                             //Prints the error message if anything goes wrong
+        catch (IOException | JSONException e)                             //Safely handles any errors when reading the file
+        {                                                                 //Prints the error message if anything goes wrong
             System.out.println("Error reading messages: " + e.getMessage());
         }
         return readFile.toArray(String[]::new);
