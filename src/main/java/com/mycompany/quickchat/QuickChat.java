@@ -96,7 +96,8 @@ public class QuickChat
 
 //3. Messaging  
         boolean quit = false;
-        Messaging msgObj = new Messaging();        
+        Messaging msgObj = new Messaging(); 
+        Statistics statObj = new Statistics();
                 
             JOptionPane.showMessageDialog(null,"Welcome to QuickChat",
                                         " ",JOptionPane.INFORMATION_MESSAGE);
@@ -105,24 +106,18 @@ public class QuickChat
            String menu = JOptionPane.showInputDialog("""
                                                SELECT AN OPTION
                                                (1) Send Message
-                                               (2) Show recent messages 
-                                               (3) Quit
+                                               (2) Show recent messages
+                                               (3) View Statistics      
+                                               (4) Quit
                                                """);
                                              DialogHelper.exitIfCancelled(menu);
-
-          //Refer to the Messaging class for full validations       
+      
             switch(menu)
             {
-                case "1" ->
-                {
-                    msgObj.sendMessage();       //Full validation is messaging class
-                }
-                
-                case "2" ->
-                {
-                    msgObj.recentMessages();    //Full validation is messaging class
-                }
-                case "3" -> quit = true;
+                case "1" -> msgObj.sendMessage();          //Full validation is messaging class
+                case "2" -> Messaging.recentMessages();    //Prt.3 Displays a report that lists the full details of all the sent messages                                                     
+                case "3" -> statObj.messageStats();
+                case "4" -> quit = true;
             }
         }
     }
@@ -132,4 +127,14 @@ public class QuickChat
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
 * 
+*/
+
+
+/*
+a)Display sender and recipient of all sent messages
+b)Display longest message
+c)Search for a message ID and display corresponding recipient and message
+d)Search for all messages sent to a particular recipient
+e)Delete a message using the message hash
+f)Display a report that lists the full details of all the sent messages
 */
