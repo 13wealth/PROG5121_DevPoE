@@ -303,18 +303,14 @@ public class Message
         {                       //Reads the whole file and returns bytes and wraps them to new String() to get text
             String storedData = new String(Files.readAllBytes(Paths.get(fileName)));                
             JSONObject root = new JSONObject(storedData);
-            
-            String[] keys = {"sentMessages", "storedMessages", "disregardedMessages"};
-            
-                for(String jsonKeys : keys)
-                {
-                    if (!root.has(jsonKeys))
+
+                    if (!root.has(arrayKey))
                     {
-                        System.out.println("No array with key '" + jsonKeys + "' found.");
-                            continue;
+                        System.out.println("No array with key '" + arrayKey + "' found.");
+                            return new String[0];
                     }
      
-                JSONArray messageArray = root.getJSONArray(jsonKeys);
+                JSONArray messageArray = root.getJSONArray(arrayKey);
                 for (int i = 0; i < messageArray.length(); i++) 
                 {
                     JSONObject jObj = messageArray.getJSONObject(i); //Gets the ith object in the array (like { "Sent Message": "Hello" })
@@ -328,8 +324,7 @@ public class Message
                     readFile.add(read);                                  //Adds that message to the messages list.
                 }
             }
-        }
-        catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
+            catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
         {                                                             //Prints the error message if anything goes wrong
             System.out.println("Error reading messages: " + e.getMessage());
         }
