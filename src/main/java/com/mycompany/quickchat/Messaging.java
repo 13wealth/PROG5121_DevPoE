@@ -49,6 +49,11 @@ public class Messaging
     }
 
 //(2) Show recent messages      
+
+    /**
+     * Displays details of the most recent messages saved in the json file
+     * readFromFile() is called from Message class and runs when select option 2  
+     */
     public static void recentMessages()
     {         
         String[] sentOnly = Message.readFromFile("allMessages.json", "sentMessages");
