@@ -5,40 +5,67 @@
 package com.mycompany.quickchat;
 
 import javax.swing.*;
+import org.json.JSONArray;
 
 /**
- * Gets the user's preferred number of messages to send and assigned unique_ID and message count
- * Regular expression was assisted by ChatGPT (2025, May 1) to handle non-numeric inputs.
- * Parse was assisted by ChatGPT (2025, May 1) to convert input to aString variable to Integer.
+ * 
  */
 public class Messaging 
 {
+    private JSONArray messageArray;
+    /**
+     * Gets the user's preferred number of messages to send and assigned unique_ID, message hash and message count
+     * Regular expression was assisted by ChatGPT (2025, May 1) to handle non-numeric inputs.
+     * Parse was assisted by ChatGPT (2025, May 1) to convert input to aString variable to Integer.
+     */    
+//(1) Send Message 
     public void sendMessage()
-    {
-                                          /*messageLimit() takes input as int but because JOptionPane only 
-                                            returns String, we need to parse/convert from String back to int
-                                            before we can use it in the for-loop and as element size*/
+    {                                      
         int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
                                     "Please enter number of messages you want to send: "));
-                            
+        
         String[] chat = new String[messageLimit];
         String[] msgID = new String[messageLimit];
         String[] recipientNum = new String[messageLimit];
-        
-        
+
         for(int i = 0; i < messageLimit; i++)
         {
-            recipientNum[i] = MessageSettings.checkRecipientCell();
-            chat[i] = MessageSettings.SendMessage((i + 1), recipientNum[i]);
-            msgID[i] = MessageSettings.checkMessageID(); 
+            recipientNum[i] = Message.checkRecipientCell();          //Full validation in the message class
+            chat[i] = Message.sentMessage((i + 1), recipientNum[i]); //Full validation in the message class
         }
-        MessageSettings.printSentMessages();
-        MessageSettings.returnTotalMessages();
-        MessageSettings.storeMessages(chat);
+        Message.printSentMessages();
+        Message.returnTotalMessages();
+        Message.savedMessages(
+                              Message.sentIDs,
+                              Message.sentHashes,
+                              Message.sentMessages,
+                              Message.storedIDs,
+                              Message.storedHashes,
+                              Message.storedMessages,
+                              Message.disregardedIDs,
+                              Message.disregardedHashes,
+                              Message.disregardedMessages
+        );
     }
-    
+
+//(2) Show recent messages      
     public static void recentMessages()
-    {      
-        JOptionPane.showMessageDialog(null, "Coming Soon.");    
+    {         
+        String[] sentOnly = Message.readFromFile("allMessages.json", "sentMessages");
+
+        if (sentOnly.length == 0) 
+        {
+            JOptionPane.showMessageDialog(null, "No sent messages found.");
+        } 
+        else 
+        {
+            StringBuilder sb = new StringBuilder("Recent Sent Messages:\n\n");
+            for (String msg : sentOnly) 
+            {
+                sb.append(msg).append("\n\n");
+            }
+
+            JOptionPane.showMessageDialog(null, sb.toString());
+        }
     }
 }
