@@ -19,18 +19,51 @@ public class Statistics
         {                                           
             String menu = JOptionPane.showInputDialog(null, """
                                                             (1) View Sender & Recipient
-                                                            (2) View Longest message
+                                                            (2) View Longest Message
                                                             (3) Search by Message ID      
                                                             (4) Search by Recipient
-                                                            (5) Delete message by Hash      
-                                                            (6) Main menu
+                                                            (5) Delete Message by Hash
+                                                            (6) View Full Report
+                                                            (7) Main menu
                                                             """, 
                                     "STATISTICS MENU", 3);
-                    DialogHelper.exitIfCancelled(menu);   
+                    DialogHelper.exitIfCancelled(menu); 
+                    
+            switch(menu)
+            {
+                //case "1" -> displaySendersAndRecipients();
+                //case "2" -> displayLongestMessage();
+                //case "3" -> searchByMessageID();
+                //case "4" -> searchByRecipient();
+                //case "5" -> deleteByHash();
+                case "6" -> displayFullReport();
+                //case "7" -> { return; } // Exit statistics menu
+                default -> JOptionPane.showMessageDialog(null, "Invalid option.");
+            }
+        }
+    }   
+
+    public void displayFullReport()
+    {
+        String[] sentOnly = Message.readFromFile("allMessages.json", "sentMessages");
+        
+            if (sentOnly.length == 0)
+            {
+                JOptionPane.showMessageDialog(null, "No sent messages found.");
+            }
+            else
+            {
+                StringBuilder report = new StringBuilder("Recent Sent Messages:\n\n");
+        
+            for (String msg : sentOnly)
+            {
+                report.append(msg).append("\n\n");
+            }
+        
+            JOptionPane.showMessageDialog(null, report.toString());
         }                               
     }
 }
-
 
 
 /*
