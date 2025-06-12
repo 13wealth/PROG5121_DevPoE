@@ -14,11 +14,10 @@ public class Messaging
 {
     private JSONArray messageArray;
     /**
-     * Gets the user's preferred number of messages to send and assigned unique_ID, message hash and message count
-     * Regular expression was assisted by ChatGPT (2025, May 1) to handle non-numeric inputs.
-     * Parse was assisted by ChatGPT (2025, May 1) to convert input to aString variable to Integer.
-     */    
-//(1) Send Message 
+     * Gets the user's preferred number of messages to send  
+     * Assigns unique_ID, message hash and message count
+     * Menu option(1)
+     */     
     public void sendMessage()
     {                                      
         int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
@@ -38,6 +37,7 @@ public class Messaging
         Message.savedMessages(
                               Message.sentIDs,
                               Message.sentHashes,
+                              Message.sentRecipients,
                               Message.sentMessages,
                               Message.storedIDs,
                               Message.storedHashes,
@@ -48,24 +48,12 @@ public class Messaging
         );
     }
 
-//(2) Show recent messages      
+    /**
+     * Displays recently sent messages (Only text details)
+     * Menu option(2)
+     */
     public static void recentMessages()
-    {         
-        String[] sentOnly = Message.readFromFile("allMessages.json", "sentMessages");
-
-        if (sentOnly.length == 0) 
-        {
-            JOptionPane.showMessageDialog(null, "No sent messages found.");
-        } 
-        else 
-        {
-            StringBuilder sb = new StringBuilder("Recent Sent Messages:\n\n");
-            for (String msg : sentOnly) 
-            {
-                sb.append(msg).append("\n\n");
-            }
-
-            JOptionPane.showMessageDialog(null, sb.toString());
-        }
+    {           
+        Message.printSentMessages();
     }
 }

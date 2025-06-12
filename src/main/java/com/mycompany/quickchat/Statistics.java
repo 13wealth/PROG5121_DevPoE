@@ -8,8 +8,8 @@ import javax.swing.*;
 
 
 /**
- *
- * @author RC_Student_lab
+ * This is a sub-menu option(3) from the main menu
+ * Displays statistics and properties of ALL the messages
  */
 public class Statistics 
 {
@@ -24,28 +24,64 @@ public class Statistics
                                                             (4) Search by Recipient
                                                             (5) Delete Message by Hash
                                                             (6) View Full Report
-                                                            (7) Main menu
+                                                            (7) Return to Main menu
                                                             """, 
                                     "STATISTICS MENU", 3);
                     DialogHelper.exitIfCancelled(menu); 
                     
             switch(menu)
             {
-                //case "1" -> displaySendersAndRecipients();
+                case "1" -> displaySendersAndRecipients();
                 //case "2" -> displayLongestMessage();
                 //case "3" -> searchByMessageID();
                 //case "4" -> searchByRecipient();
                 //case "5" -> deleteByHash();
                 case "6" -> displayFullReport();
-                //case "7" -> { return; } // Exit statistics menu
+                case "7" -> { return; }
                 default -> JOptionPane.showMessageDialog(null, "Invalid option.");
             }
         }
     }   
 
+    /**
+     * Display sender and recipient of all sent messages
+     * Option(1) from the menu
+     */
+    public void displaySendersAndRecipients() 
+    {
+        String[] recipients = Message.readSendersAndRecipients("allMessages.json", "sentMessages");
+
+            if (recipients.length == 0) 
+            {
+                JOptionPane.showMessageDialog(null, "No sent messages found.");
+            } 
+            else 
+            {
+                StringBuilder result = new StringBuilder("Senders and Recipients:\n\n");
+        
+            for (String line : recipients) 
+            {
+                result.append(line).append("\n");
+            }
+            JOptionPane.showMessageDialog(null, result.toString());
+        }
+    }
+    
+    /**
+     * Display longest message
+     */
+    public void displayLongestMessage() 
+    {
+        
+        
+    } 
+    /**
+     *  Display a report that lists the full details of all the sent messages
+     *  Option(6) from the menu
+     */
     public void displayFullReport()
     {
-        String[] sentOnly = Message.readFromFile("allMessages.json", "sentMessages");
+        String[] sentOnly = Message.readAll("allMessages.json", "sentMessages");
         
             if (sentOnly.length == 0)
             {
@@ -53,24 +89,24 @@ public class Statistics
             }
             else
             {
-                StringBuilder report = new StringBuilder("Recent Sent Messages:\n\n");
-        
+                StringBuilder result = new StringBuilder("Recent Sent Messages:\n\n"); /*Creates a header and prepares 
+                                                                                a StringBuilder to hold the message body.*/        
             for (String msg : sentOnly)
             {
-                report.append(msg).append("\n\n");
+                result.append(msg).append("\n\n");
             }
         
-            JOptionPane.showMessageDialog(null, report.toString());
+            JOptionPane.showMessageDialog(null, result.toString());
         }                               
-    }
+    }  
 }
-
-
+    
+    
 /*
-a)Display sender and recipient of all sent messages
-b)Display longest message
+a)
+b)
 c)Search for a message ID and display corresponding recipient and message
 d)Search for all messages sent to a particular recipient
 e)Delete a message using the message hash
-f)Display a report that lists the full details of all the sent messages
+f)
 */

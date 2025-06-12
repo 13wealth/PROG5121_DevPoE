@@ -27,6 +27,7 @@ public class Message
 {
     public static ArrayList<String> sentIDs = new ArrayList<>();
     public static ArrayList<String> sentHashes = new ArrayList<>();
+    public static ArrayList<String> sentRecipients = new ArrayList<>();
     public static ArrayList<String> sentMessages = new ArrayList<>();
     public static ArrayList<String> storedIDs = new ArrayList<>();
     public static ArrayList<String> storedHashes = new ArrayList<>();
@@ -113,15 +114,19 @@ public class Message
      */
     public static String sentMessage(int numMessages, String recipient)
     {
+        //String recipientNum = checkRecipientCell();
+        
         JTextArea textBox = new JTextArea(10,30);     //Creates a new textbox for typing message
         textBox.setBackground(Color.black);                  //Settings for the textbox
         textBox.setForeground(Color.yellow);
         textBox.setWrapStyleWord(true);
         textBox.setLineWrap(true);
-                                                                //Custom buttons to replace 'OK' and 'Cancel'
-        Object[] customButton = {"Send Message",                //Button 0   
+                                                                
+        Object[] customButton = {                               //Custom buttons to replace 'OK' and 'Cancel'
+                                 "Send Message",                //Button 0   
                                  "Store Message to Send later", //Button 1
-                                 "Disregard Message"};          //Button 2
+                                 "Disregard Message"            //Button 2
+            };          
         while(true)
         {
             int sendMessage = JOptionPane.showOptionDialog(null, new JScrollPane(textBox), "Message: " 
@@ -132,7 +137,7 @@ public class Message
                 {
                     case 0 ->                                   //Button 0 <Send Message>
                     {
-                            String text = textBox.getText(); /*Stores input messages in 'text' and returned 
+                            String text = textBox.getText();    /*Stores input messages in 'text' and returned 
                                                                   if user clicks Button 0. Trims whitespaces*/
                         if(text.length() > 250)
                         {
@@ -144,26 +149,23 @@ public class Message
                         {
                             String uniqueID = checkMessageID();
                             String messageHash = createMessageHash(uniqueID, numMessages, text);
+                            sentIDs.add(uniqueID);             //Appends and Holds <uniqueID> for storage in JSON file
+                            sentHashes.add(messageHash);       //Appends and Holds <messageHash> for storage in JSON file
+                            sentRecipients.add(recipient);     //Appends and Holds <recipientNumber> for storage in JSON file
+                            sentMessages.add(text);            //Appends and Holds <text> for storage in JSON file     
                             
-                            sentIDs.add(uniqueID);            //Appends and Holds <uniqueID> for storage in JSON file
-                            sentHashes.add(messageHash);      //Appends and Holds <messageHash> for storage in JSON file
-                            sentMessages.add(text);           //Appends and Holds <text> for storage in JSON file     
-                            
-                           
                             JOptionPane.showMessageDialog(null, "Message sent!\n\nMessage ID: " + uniqueID + 
                                                           "\nMessage Hash: " + messageHash + "\nRecipient: " + recipient +
                                                             "\nMessage: " + text);
-                                    
                         return text;
                         }
                     }
                     
-                    case 1 ->                               //Button 1(Store Message to Send later)
+                    case 1 ->                                   //Button 1(Store Message to Send later)
                     {
                             String text = textBox.getText();
                             String uniqueID = checkMessageID(); 
                             String messageHash = createMessageHash(uniqueID, numMessages, text);
-                            
                             storedIDs.add(uniqueID);       
                             storedHashes.add(messageHash); 
                             storedMessages.add(text);         
@@ -172,12 +174,11 @@ public class Message
                         return "";
                     }
                    
-                    case 2,-1 ->                               //Button 2 or closes the dialog box
+                    case 2,-1 ->                                //Button 2 or closes the dialog box
                     {
                             String text = textBox.getText();
                             String uniqueID = checkMessageID();
-                            String messageHash = createMessageHash(uniqueID, numMessages, text);
-                            
+                            String messageHash = createMessageHash(uniqueID, numMessages, text);                            
                             disregardedIDs.add(uniqueID);       
                             disregardedHashes.add(messageHash); 
                             disregardedMessages.add(text);
@@ -216,10 +217,11 @@ public class Message
     }     
             
     /**
-     * Stores all messages in JSON file once all have been sent, stored or disregarded
+     * Stores ALL message details in JSON file once all have been sent, stored or disregarded
      * Assisted by ChatGPT (2025, May 26) to create JSON dependency/import and method
      * @param sentIDs
      * @param sentHashes
+     * @param sentRecipients
      * @param sentMessages
      * @param storedIDs
      * @param storedHashes
@@ -229,25 +231,27 @@ public class Message
      * @param disregardedMessages
      */
     public static void savedMessages(
-                                     ArrayList<String> sentIDs, 
-                                     ArrayList<String> sentHashes, 
-                                     ArrayList<String> sentMessages,
-                                     ArrayList<String> storedIDs, 
-                                     ArrayList<String> storedHashes, 
-                                     ArrayList<String> storedMessages,
-                                     ArrayList<String> disregardedIDs, 
-                                     ArrayList<String> disregardedHashes, 
-                                     ArrayList<String> disregardedMessages
+            ArrayList<String> sentIDs, 
+            ArrayList<String> sentHashes, 
+            ArrayList<String> sentRecipients, 
+            ArrayList<String> sentMessages, 
+            ArrayList<String> storedIDs, 
+            ArrayList<String> storedHashes, 
+            ArrayList<String> storedMessages, 
+            ArrayList<String> disregardedIDs, 
+            ArrayList<String> disregardedHashes, 
+            ArrayList<String> disregardedMessages
         )   
     {
-        JSONObject root = new JSONObject();
+        JSONObject root = new JSONObject();         
 
         JSONArray sentArray = new JSONArray();                                  //Gets and holds sent messages
         for (int i = 0; i < sentMessages.size(); i++) 
         {
-            JSONObject msg = new JSONObject();                                  
+            JSONObject msg = new JSONObject();
             msg.put("Message ID", sentIDs.get(i));
             msg.put("Message Hash", sentHashes.get(i));
+            msg.put("Recipient No", sentRecipients.get(i));
             msg.put("Sent Message", sentMessages.get(i));
             sentArray.put(msg);
         }
@@ -289,13 +293,13 @@ public class Message
     }
      
     /**
-     * Reads data that is stored in a JSON file and returns it in an array list
+     * Reads ALL the data stored in a JSON file and returns it in an array list
      * Assisted by ChatGPT (2025, June 08) to create a file reading method 
      * @param fileName
      * @param arrayKey
      * @return
      */
-    public static String[] readFromFile(String fileName, String arrayKey)
+    public static String[] readAll(String fileName, String arrayKey)
     {
         ArrayList<String> readFile = new ArrayList<>(); /*Creates a list to temporarily store each message from 
                                                       the file that will be converted to a String[] then returned*/   
@@ -310,34 +314,70 @@ public class Message
                         return new String[0];
                 }
      
-                JSONArray messageArray = root.getJSONArray(arrayKey);
-                for (int i = 0; i < messageArray.length(); i++) 
-                {
-                    JSONObject jObj = messageArray.getJSONObject(i); /*Gets the ith object in the array 
-                                                                           (like { "Sent Message": "Hello" })*/
-                    String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
-                    String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
-                    String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
-                    
-                    String read = String.format("Message ID: %s | Hash: %s | Sent Message: %s", 
-                                                               id, hash, msg
-                    );
-                    readFile.add(read);                                 //Adds that message to the messages list.
-                }
+            JSONArray messageArray = root.getJSONArray(arrayKey);
+            for (int i = 0; i < messageArray.length(); i++) 
+            {
+                JSONObject jObj = messageArray.getJSONObject(i); /*Gets the ith object in the array 
+                                                                       (like { "Sent Message": "Hello" })*/
+                String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
+                String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
+                String recipient = jObj.getString("Recipient No"); //Pull the recipent number from key "Recipient No"
+                String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
+
+                String read = String.format("Message ID: %s | Hash: %s | Recipient: %s | Sent Message: %s",
+                                                             id, hash, recipient,msg
+                );
+                readFile.add(read);                                 //Adds that message to the messages list.
+            }
         
         }
-        catch (IOException | JSONException e)                             //Safely handles any errors when reading the file
-        {                                                                 //Prints the error message if anything goes wrong
+        catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
+        {                                                             //Prints the error message if anything goes wrong
             System.out.println("Error reading messages: " + e.getMessage());
         }
         return readFile.toArray(String[]::new);
     }
-}
+   
+    /**
+     * Finds the sentRecipient key in the JSON file and extracts RECIPIENT information
+     * @param fileName
+     * @param arrayKey
+     * @return
+     */
+    public static String[] readSendersAndRecipients(String fileName, String arrayKey) 
+    {
+        ArrayList<String> result = new ArrayList<>();
     
+        try 
+        {
+            String storedData = new String(Files.readAllBytes(Paths.get(fileName)));
+            JSONObject root = new JSONObject(storedData);
+
+                if (!root.has(arrayKey)) 
+                {
+                    System.out.println("No array with key '" + arrayKey + "' found.");
+                        return new String[0];
+                }
+
+                JSONArray messageArray = root.getJSONArray(arrayKey);
+                for (int i = 0; i < messageArray.length(); i++) 
+                {            
+                    JSONObject msg = messageArray.getJSONObject(i);
+                    String recipient = msg.optString("Recipient No", "Unknown");
+
+                result.add("Sender: You | Recipient: " + recipient);
+                }
+        }   
+        catch (IOException | JSONException e) 
+        {
+            System.out.println("Error reading recipients: " + e.getMessage());
+        }
+        return result.toArray(new String[0]);
+    }
+    
+}
+ 
 /**
 * References:
-* OpenAI. (2025, May 25). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
-* OpenAI. (2025, May 26). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
-* OpenAI. (2025, May 27). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
-* OpenAI. (2025, June 08). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
+* OpenAI. (2025, June 12). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
 */
