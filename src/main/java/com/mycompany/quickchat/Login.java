@@ -12,22 +12,28 @@ import javax.swing.JOptionPane;
  */
 public class Login 
 {
-    private String storedName, storedSurname;
-    private String storedUser, storedPass;
+    private String registeredName, registeredSurname;
+    private String registeredUsername, registeredPassword;
 
     /**
      * Registration inputs in the main are passed through this constructor method
-     * @param storedName
-     * @param storedSurname
-     * @param storedUser
-     * @param storedPass
+     * @param name
+     * @param surname
+     * @param username
+     * @param password
      */
-    public void registerUser(String storedName, String storedSurname, String storedUser, String storedPass)                   
+    public void registerUser(String name, String surname, String username, String password)                   
     {                                                                                               
-        this.storedName = storedName;
-        this.storedSurname = storedSurname;
-        this.storedUser = storedUser;
-        this.storedPass = storedPass;
+        this.registeredName = name;
+        this.registeredSurname = surname;
+        this.registeredUsername = username;
+        this.registeredPassword = password;
+    }
+    
+    public String getFullName()
+    {
+        return registeredName + " " + registeredSurname; /*Getter to assign the inputs to the sender variable
+                                                           readSendersAndRecipients() in Message class*/
     }
     
     /**
@@ -39,9 +45,9 @@ public class Login
     public boolean loginUser(String inputUser,String inputPass)                  
     {                                                                 /*Method is called using an object 
                                                                         in the main to pass the login inputs*/
-        if (inputUser.equals(storedUser) &&  inputPass.equals(storedPass))
+        if (inputUser.equals(registeredUsername) &&  inputPass.equals(registeredPassword))
         {  
-            JOptionPane.showMessageDialog(null, "Welcome " + storedName + " " + storedSurname  +
+            JOptionPane.showMessageDialog(null, "Welcome " + registeredName + " " + registeredSurname  +
                                                 ", " + "it is great to see you again!",
                                                 "SUCCESS",JOptionPane.INFORMATION_MESSAGE);
                 return true;

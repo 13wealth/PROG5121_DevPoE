@@ -8,12 +8,12 @@ import javax.swing.*;
 
 
 /**
- * This is a sub-menu option(3) from the main menu
+ * This is a sub-menu, option(3) from the main menu
  * Displays statistics and properties of ALL the messages
  */
 public class Statistics 
 {
-    public void messageStats()
+    public void messageStats(Login logObj)
     {
         while(true)
         {                                           
@@ -31,8 +31,8 @@ public class Statistics
                     
             switch(menu)
             {
-                case "1" -> displaySendersAndRecipients();
-                //case "2" -> displayLongestMessage();
+                case "1" -> displaySendersAndRecipients(logObj);
+                case "2" -> displayLongestMessage();
                 //case "3" -> searchByMessageID();
                 //case "4" -> searchByRecipient();
                 //case "5" -> deleteByHash();
@@ -46,10 +46,13 @@ public class Statistics
     /**
      * Display sender and recipient of all sent messages
      * Option(1) from the menu
+     * Assisted by ChatGPT (2025, June 13) to create the logic for the method
+     * @param logObj
      */
-    public void displaySendersAndRecipients() 
+    public void displaySendersAndRecipients(Login logObj) 
     {
-        String[] recipients = Message.readSendersAndRecipients("allMessages.json", "sentMessages");
+        String[] recipients = Message.readSendersAndRecipients("allMessages.json", 
+                                                                "sentMessages", logObj);
 
             if (recipients.length == 0) 
             {
@@ -69,19 +72,59 @@ public class Statistics
     
     /**
      * Display longest message
+     * Option(2) from the menu
+     * Assisted by ChatGPT (2025, June 13) for getting and measuring characters of the message
      */
     public void displayLongestMessage() 
     {
+        String[] sentOnly = Message.readAllData("allMessages.json", "sentMessages");
         
+            if (sentOnly.length == 0)
+            {
+                JOptionPane.showMessageDialog(null, "No sent messages found.");
+                return;
+            }
+       
+        String longestMessage = "";
+        int maxLength = 0; 
         
-    } 
+        for (String msg : sentOnly) 
+        {
+            try 
+            {
+            String[] parts = msg.split("Sent Message: "); // Extract the actual "Sent Message" portion
+                if (parts.length < 2) 
+                    continue;
+         
+            String messageContent = parts[1].trim();  // Get just the message
+                if (messageContent.length() > maxLength) 
+                {
+                    maxLength = messageContent.length();
+                    longestMessage = msg;
+                }
+            } 
+            catch (Exception e) 
+            {
+                System.out.println("Error processing message: " + e.getMessage());
+            }
+        }
+            if (!longestMessage.isEmpty()) 
+            {
+                JOptionPane.showMessageDialog(null, "Longest Sent Message:\n\n" + longestMessage);
+            } 
+            else 
+        {
+            JOptionPane.showMessageDialog(null, "No valid messages found.");
+        }
+    }
+ 
     /**
      *  Display a report that lists the full details of all the sent messages
      *  Option(6) from the menu
      */
     public void displayFullReport()
     {
-        String[] sentOnly = Message.readAll("allMessages.json", "sentMessages");
+        String[] sentOnly = Message.readAllData("allMessages.json", "sentMessages");
         
             if (sentOnly.length == 0)
             {
@@ -101,7 +144,11 @@ public class Statistics
     }  
 }
     
-    
+ /**
+* References:
+* OpenAI. (2025, June 13). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat
+*/
+
 /*
 a)
 b)
