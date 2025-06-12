@@ -23,18 +23,18 @@ public class Messaging
         int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
                                     "Please enter number of messages you want to send: "));
         
-        String[] chat = new String[messageLimit];
-        String[] msgID = new String[messageLimit];
-        String[] recipientNum = new String[messageLimit];
+            String[] chat = new String[messageLimit];
+            String[] msgID = new String[messageLimit];
+            String[] recipientNum = new String[messageLimit];
 
         for(int i = 0; i < messageLimit; i++)
         {
             recipientNum[i] = Message.checkRecipientCell();          //Full validation in the message class
             chat[i] = Message.sentMessage((i + 1), recipientNum[i]); //Full validation in the message class
         }
-        Message.printSentMessages();
-        Message.returnTotalMessages();
-        Message.savedMessages(
+            Message.printSentMessages();
+            Message.returnTotalMessages();
+            Message.savedMessages(
                               Message.sentIDs,
                               Message.sentHashes,
                               Message.sentRecipients,

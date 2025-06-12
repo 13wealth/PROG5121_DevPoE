@@ -39,7 +39,7 @@ public class QuickChat
                                                            Must be a valid South African cellphone number""",
                                                         "INPUT CELLPHONE NUMBER",3);
                 DialogHelper.exitIfCancelled(cellNumber);
-            isPhoneValid = regObj.checkCellPhoneNumber(cellNumber);
+            isPhoneValid = regObj.checkCellPhoneNumber(cellNumber.trim());
         }while (!isPhoneValid);                                         /*While the value is not valid, the statement  
                                                                      in the loop-body continue to execute*/
     //3.1. Username registration
@@ -116,7 +116,7 @@ public class QuickChat
             {
                 case "1" -> msgObj.sendMessage();          //Full validation is messaging class
                 case "2" -> Messaging.recentMessages();    //Prt.3 Displays a report that lists the full details of all the sent messages                                                     
-                case "3" -> statObj.messageStats();
+                case "3" -> statObj.messageStats(logObj);
                 case "4" -> quit = true;
             }
         }

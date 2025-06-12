@@ -89,6 +89,8 @@ public class Message
                                                                Must be a valid South African cellphone number""",
                                                             "ENTER RECIPIENT CELLPHONE NUMBER",3);
                                 DialogHelper.exitIfCancelled(recipientNum);
+                                    recipientNum = recipientNum.trim();
+                                    
                 if(Pattern.matches(cellRegex, recipientNum))
                 {           
                     return recipientNum;
@@ -98,7 +100,6 @@ public class Message
                     JOptionPane.showMessageDialog(null, 
                                         "Cellphone number incorrectly formatted or does not contain international code.",
                                         "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-                    return null;
             }
         }
     }       
@@ -299,7 +300,7 @@ public class Message
      * @param arrayKey
      * @return
      */
-    public static String[] readAll(String fileName, String arrayKey)
+    public static String[] readAllData(String fileName, String arrayKey)
     {
         ArrayList<String> readFile = new ArrayList<>(); /*Creates a list to temporarily store each message from 
                                                       the file that will be converted to a String[] then returned*/   
@@ -342,9 +343,10 @@ public class Message
      * Finds the sentRecipient key in the JSON file and extracts RECIPIENT information
      * @param fileName
      * @param arrayKey
+     * @param logObj
      * @return
      */
-    public static String[] readSendersAndRecipients(String fileName, String arrayKey) 
+    public static String[] readSendersAndRecipients(String fileName, String arrayKey, Login logObj) 
     {
         ArrayList<String> result = new ArrayList<>();
     
@@ -363,9 +365,11 @@ public class Message
                 for (int i = 0; i < messageArray.length(); i++) 
                 {            
                     JSONObject msg = messageArray.getJSONObject(i);
+                    
                     String recipient = msg.optString("Recipient No", "Unknown");
+                    String sender = logObj.getFullName();
 
-                result.add("Sender: You | Recipient: " + recipient);
+                result.add("Sender: " + sender + "| Recipient: " + recipient);
                 }
         }   
         catch (IOException | JSONException e) 
