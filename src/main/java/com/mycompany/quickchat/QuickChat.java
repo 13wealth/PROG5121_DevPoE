@@ -114,9 +114,9 @@ public class QuickChat
       
             switch(menu)
             {
-                case "1" -> msgObj.sendMessage();          //Full validation is messaging class
-                case "2" -> Messaging.recentMessages();    //Prt.3 Displays a report that lists the full details of all the sent messages                                                     
-                case "3" -> statObj.messageStats(logObj);
+                case "1" -> msgObj.sendMessage();         //Full validation is messaging class
+                case "2" -> Messaging.recentMessages();   //Prt.3 Displays a report that lists the full details of all the sent messages                                                     
+                case "3" -> statObj.messageStats(logObj); //Param parsed to return registered fullnames as a sender on case->2
                 case "4" -> quit = true;
             }
         }
