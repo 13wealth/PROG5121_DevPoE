@@ -19,10 +19,40 @@ public class Messaging
      * Menu option(1)
      */     
     public void sendMessage()
-    {                                      
-        int messageLimit = Integer.parseInt(JOptionPane.showInputDialog(null, 
-                                    "Please enter number of messages you want to send: "));
+    {   
+        int messageLimit = -1;       
         
+        while (true) 
+        {
+            String input = JOptionPane.showInputDialog(null, 
+                "Please enter number of messages you want to send:");           
+
+                if (input == null) 
+                {
+                    JOptionPane.showMessageDialog(null, "Cancelled. Returning to menu.");
+                    return;
+                }
+                    if (input.matches("\\d+")) //Checks if input is only digits (0-9)
+                    { 
+                        messageLimit = Integer.parseInt(input);
+
+                        if (messageLimit > 0) 
+                        {
+                            break;
+                        } 
+                        else 
+                        {
+                            JOptionPane.showMessageDialog(null, 
+                                                    "Please enter a number greater than 0.");
+                        }
+                    }
+                    else 
+                    {
+                        JOptionPane.showMessageDialog(null, 
+                                            "Invalid input. Only whole numbers allowed.");
+                    }
+            }
+
             String[] chat = new String[messageLimit];
             String[] msgID = new String[messageLimit];
             String[] recipientNum = new String[messageLimit];

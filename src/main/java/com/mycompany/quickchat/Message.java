@@ -287,9 +287,9 @@ public class Message
             file.flush();                                                       //Ensure messaged are stored in disk
             System.out.println("Messages saved to JSON file");
         } 
-        catch (IOException e)                                                   //Error handling when saving
+        catch (IOException x)                                                   //Error handling when saving
         {
-            System.out.println("Error saving messages: " + e.getMessage());
+            System.out.println("Error saving messages: " + x.getMessage());
         }
     }
      
@@ -306,8 +306,8 @@ public class Message
                                                       the file that will be converted to a String[] then returned*/   
         try 
         {                       //Reads the whole file and returns bytes and wraps them to new String() to get text
-            String storedData = new String(Files.readAllBytes(Paths.get(fileName)));                
-            JSONObject root = new JSONObject(storedData);
+            String data = new String(Files.readAllBytes(Paths.get(fileName)));                
+            JSONObject root = new JSONObject(data);
         
                 if (!root.has(arrayKey))
                 {
@@ -332,9 +332,9 @@ public class Message
             }
         
         }
-        catch (IOException | JSONException e)                         //Safely handles any errors when reading the file
+        catch (IOException | JSONException x)                         //Safely handles any errors when reading the file
         {                                                             //Prints the error message if anything goes wrong
-            System.out.println("Error reading messages: " + e.getMessage());
+            System.out.println("Error reading messages: " + x.getMessage());
         }
         return readFile.toArray(String[]::new);
     }
@@ -352,8 +352,8 @@ public class Message
     
         try 
         {
-            String storedData = new String(Files.readAllBytes(Paths.get(fileName)));
-            JSONObject root = new JSONObject(storedData);
+            String data = new String(Files.readAllBytes(Paths.get(fileName)));
+            JSONObject root = new JSONObject(data);
 
                 if (!root.has(arrayKey)) 
                 {
@@ -372,11 +372,40 @@ public class Message
                 result.add("Sender: " + sender + "| Recipient: " + recipient);
                 }
         }   
-        catch (IOException | JSONException e) 
+        catch (IOException | JSONException x) 
         {
-            System.out.println("Error reading recipients: " + e.getMessage());
+            System.out.println("Error reading recipients: " + x.getMessage());
         }
-        return result.toArray(new String[0]);
+        return result.toArray(String[]::new);
+    }
+    
+    /**
+     * Helper method to ready the JSON file arrays and return the 
+     * @param fileName
+     * @param arrayKey
+     * @return
+     */
+    public static JSONArray readJSONArray(String filename, String arrayKey) 
+    {
+        try 
+        {
+            String data = new String(Files.readAllBytes(Paths.get(filename)));
+            JSONObject root = new JSONObject(data);
+
+            if (root.has(arrayKey)) 
+            {
+                return root.getJSONArray(arrayKey);
+            } 
+            else 
+            {
+                System.out.println("No array with key '" + arrayKey + "' found.");
+            }
+        } 
+        catch (IOException | JSONException x)
+        {
+            System.out.println("Error reading messages: " + x.getMessage());
+        }
+                return new JSONArray(); //Return empty array if something fails
     }
     
 }

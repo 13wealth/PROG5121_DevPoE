@@ -4,7 +4,11 @@
  */
 package com.mycompany.quickchat;
 
+import java.awt.HeadlessException;
 import javax.swing.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -33,7 +37,12 @@ public class Statistics
             {
                 case "1" -> displaySendersAndRecipients(logObj);
                 case "2" -> displayLongestMessage();
-                //case "3" -> searchByMessageID();
+                case "3" -> 
+                {
+                    String id = JOptionPane.showInputDialog(null, "Enter Message ID to search:");
+                        DialogHelper.exitIfCancelled(id);
+                            searchMessageID(id);
+                }
                 //case "4" -> searchByRecipient();
                 //case "5" -> deleteByHash();
                 case "6" -> displayFullReport();
@@ -92,20 +101,20 @@ public class Statistics
         {
             try 
             {
-            String[] parts = msg.split("Sent Message: "); // Extract the actual "Sent Message" portion
+            String[] parts = msg.split("Sent Message: "); //Extract the actual "Sent Message" portion
                 if (parts.length < 2) 
                     continue;
          
-            String messageContent = parts[1].trim();  // Get just the message
+            String messageContent = parts[1].trim(); 
                 if (messageContent.length() > maxLength) 
                 {
                     maxLength = messageContent.length();
                     longestMessage = msg;
                 }
             } 
-            catch (Exception e) 
+            catch (HeadlessException | JSONException x) 
             {
-                System.out.println("Error processing message: " + e.getMessage());
+                System.out.println("Error processing message: " + x.getMessage());
             }
         }
             if (!longestMessage.isEmpty()) 
@@ -117,7 +126,38 @@ public class Statistics
             JOptionPane.showMessageDialog(null, "No valid messages found.");
         }
     }
- 
+    
+    /**
+     * Search for a message ID and display corresponding recipient and message
+     * Option(3) from the menu
+     * @param messageID
+     */
+    public static void searchMessageID(String messageID)
+    {
+        JSONArray messages = Message.readJSONArray("allMessages.json", "sentMessages");
+        
+       boolean found = false;
+
+        for (int i = 0; i < messages.length(); i++)         //Goes through each and every message in the JSON file
+        {
+            JSONObject msg = messages.getJSONObject(i);
+            
+            if (msg.getString("messageID").equalsIgnoreCase(messageID)) //Checks the messageID being searched for 
+            {
+                JOptionPane.showMessageDialog(null,
+                "Recipient: " + msg.getString("Recipient No") + "\n" +
+                "Message: " + msg.getString("Sent Message"));
+                found = true;
+                break;
+            }
+        }
+
+            if (!found) 
+            {
+                JOptionPane.showMessageDialog(null, "Message ID not found.");
+            }
+        } 
+        
     /**
      *  Display a report that lists the full details of all the sent messages
      *  Option(6) from the menu
@@ -138,7 +178,6 @@ public class Statistics
             {
                 result.append(msg).append("\n\n");
             }
-        
             JOptionPane.showMessageDialog(null, result.toString());
         }                               
     }  
@@ -152,7 +191,7 @@ public class Statistics
 /*
 a)
 b)
-c)Search for a message ID and display corresponding recipient and message
+c)
 d)Search for all messages sent to a particular recipient
 e)Delete a message using the message hash
 f)

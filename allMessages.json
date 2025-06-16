@@ -1,14 +1,18 @@
 {
-    "disregardedMessages": [],
+    "disregardedMessages": [{
+        "Message Hash": "48:3:SDFDSFSDFDSSDFDSFSDFDS",
+        "Sent Message": "SDFDSFSDFDS",
+        "Message ID": "4872866772"
+    }],
     "sentMessages": [{
-        "Message Hash": "70:1:TESTINGSENDER",
+        "Message Hash": "70:1:ADASFSDFDSADASFSDFDS",
         "Recipient No": "+27627680710",
-        "Sent Message": "Testing the sender",
-        "Message ID": "7091113007"
+        "Sent Message": "ADASFSDFDS",
+        "Message ID": "7016946698"
     }],
     "storedMessages": [{
-        "Message Hash": "73:2:ONEMESSAGE",
-        "Sent Message": "One more message",
-        "Message ID": "7332590838"
+        "Message Hash": "41:2:ADSFSDFDSADSFSDFDS",
+        "Sent Message": "ADSFSDFDS",
+        "Message ID": "4115270684"
     }]
 }
