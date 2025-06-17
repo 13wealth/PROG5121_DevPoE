@@ -194,7 +194,7 @@ public class Message
 
     /**
      * Prints a list of messages that were sent as the program was running
-     * Assisted by ChatGPT (2025, May 27) to build the printSentMEssages
+     * Assisted by ChatGPT (2025, May 27) to assist with appending results
      */
     public static void printSentMessages() 
     {
@@ -228,9 +228,11 @@ public class Message
      * @param sentMessages
      * @param storedIDs
      * @param storedHashes
+     * @param storedRecipients
      * @param storedMessages
      * @param disregardedIDs
      * @param disregardedHashes
+     * @param disregardedRecipients
      * @param disregardedMessages
      */
     public static void savedMessages(
@@ -398,7 +400,7 @@ public class Message
                                                                        (like { "Sent Message": "Hello" })*/
                 String id = jObj.getString("Message ID");          //Pulls the message ID from the key "Message ID"
                 String hash = jObj.getString("Message Hash");      //Pulls the message hash from the key "Message Hash"
-                String recipient = jObj.getString("Recipient No"); //Pull the recipent number from key "Recipient No"
+                String recipient = jObj.getString("Recipient No"); //Pulls the recipent number from key "Recipient No"
                 String msg = jObj.getString("Sent Message");       //Pulls the message text from the key "Sent Message"
 
                 String read = String.format("Message ID: %s | Hash: %s | Recipient: %s | Sent Message: %s",
