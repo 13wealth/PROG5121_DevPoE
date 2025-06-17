@@ -1,20 +1,18 @@
 {
-    "disregardedMessages": [{
-        "Message Hash": "54:3:THREETHREE",
-        "Recipient No": "+27627680710",
-        "Sent Message": "THREE",
-        "Message ID": "5483217795"
-    }],
-    "sentMessages": [{
-        "Message Hash": "35:1:ONEONE",
-        "Recipient No": "+27627680710",
-        "Sent Message": "ONE",
-        "Message ID": "3577620027"
-    }],
-    "storedMessages": [{
-        "Message Hash": "30:2:TWOTWO",
-        "Recipient No": "+27627680710",
-        "Sent Message": "TWO",
-        "Message ID": "3054056490"
-    }]
+    "disregardedMessages": [],
+    "sentMessages": [
+        {
+            "Message Hash": "56:1:AFGSDCAFGSDC",
+            "Recipient No": "+27627680710",
+            "Sent Message": "afgsdc",
+            "Message ID": "5637216960"
+        },
+        {
+            "Message Hash": "22:3:ASDSADSAASDSADSA",
+            "Recipient No": "+27627680711",
+            "Sent Message": "asdsadsa",
+            "Message ID": "2290532954"
+        }
+    ],
+    "storedMessages": []
 }
