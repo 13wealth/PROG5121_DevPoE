@@ -22,12 +22,12 @@ public class Statistics
         while(true)
         {                                           
             String menu = JOptionPane.showInputDialog(null, """
-                                                            (1) View Sender & Recipient
-                                                            (2) View Longest Message
-                                                            (3) Search by Message ID      
-                                                            (4) Search by Recipient
-                                                            (5) Delete Message by Hash
-                                                            (6) View Full Report
+                                                            (1) Sent Messages: View Sender & Recipient
+                                                            (2) Sent Messages: View Longest Message
+                                                            (3) All  Messages: Search by Message ID      
+                                                            (4) Sent Messages: Search by Recipient
+                                                            (5) All  Messages: Delete by Hash
+                                                            (6) Sent Messages: View Full Report
                                                             (7) Return to Main menu
                                                             """, 
                                     "STATISTICS MENU", 3);
@@ -39,9 +39,29 @@ public class Statistics
                 case "2" -> displayLongestMessage();
                 case "3" -> 
                 {
-                    String id = JOptionPane.showInputDialog(null, "Enter Message ID to search:");
-                        DialogHelper.exitIfCancelled(id);
-                            searchMessageID(id);
+                    String[] options = {"sentMessages", "storedMessages", "disregardedMessages"};
+
+                    String selection =  (String) JOptionPane.showInputDialog(
+                                                                    null,
+                                                                    "Select which message section to search in:",
+                                                                    "SEARCH FOR MESSAGES",
+                                                                    JOptionPane.PLAIN_MESSAGE,
+                                                                    null,
+                                                                    options,
+                                                                    options[0]
+                            );
+                        if(selection != null)
+                        {
+                            String messageID = JOptionPane.showInputDialog(null, 
+                                                                    "Enter Message ID to search:");
+                                DialogHelper.exitIfCancelled(messageID);
+                                    searchMessageID("allMessages.json", selection, messageID);
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, "Search cancelled");
+                                return; 
+                        }   
                 }
                 //case "4" -> searchByRecipient();
                 //case "5" -> deleteByHash();
@@ -53,14 +73,14 @@ public class Statistics
     }   
 
     /**
-     * Display sender and recipient of all sent messages
+     * Displays sender and recipient of all sent messages
      * Option(1) from the menu
      * Assisted by ChatGPT (2025, June 13) to create the logic for the method
      * @param logObj
      */
     public void displaySendersAndRecipients(Login logObj) 
     {
-        String[] recipients = Message.readSendersAndRecipients("allMessages.json", 
+        String[] recipients = Message.readSenderRecipient("allMessages.json", 
                                                                 "sentMessages", logObj);
 
             if (recipients.length == 0) 
@@ -69,7 +89,7 @@ public class Statistics
             } 
             else 
             {
-                StringBuilder result = new StringBuilder("Senders and Recipients:\n\n");
+                StringBuilder result = new StringBuilder("Senders and Recipients of all sent messages:\n\n");
         
             for (String line : recipients) 
             {
@@ -80,7 +100,7 @@ public class Statistics
     }
     
     /**
-     * Display longest message
+     * Displays longest message
      * Option(2) from the menu
      * Assisted by ChatGPT (2025, June 13) for getting and measuring characters of the message
      */
@@ -128,25 +148,27 @@ public class Statistics
     }
     
     /**
-     * Search for a message ID and display corresponding recipient and message
+     * Searches for a message ID and display corresponding recipient and message
      * Option(3) from the menu
+     * @param filename
+     * @param arrayKey
      * @param messageID
      */
-    public static void searchMessageID(String messageID)
+    public static void searchMessageID(String filename, String arrayKey, String messageID)
     {
-        JSONArray messages = Message.readJSONArray("allMessages.json", "sentMessages");
-        
-       boolean found = false;
+        JSONArray messages = Message.readJSONArray(filename, arrayKey);     //Call the method that reads the JSON file
+  
+        boolean found = false;
 
-        for (int i = 0; i < messages.length(); i++)         //Goes through each and every message in the JSON file
+        for (int i = 0; i < messages.length(); i++)             //Goes through each and every message in the JSON file
         {
             JSONObject msg = messages.getJSONObject(i);
             
-            if (msg.getString("messageID").equalsIgnoreCase(messageID)) //Checks the messageID being searched for 
+            if (msg.optString("Message ID").equalsIgnoreCase(messageID)) //Checks the messageID being searched for 
             {
                 JOptionPane.showMessageDialog(null,
-                "Recipient: " + msg.getString("Recipient No") + "\n" +
-                "Message: " + msg.getString("Sent Message"));
+                                            "Recipient: " + msg.optString("Recipient No") + "\n" +
+                                            "Message: " + msg.optString("Sent Message"));
                 found = true;
                 break;
             }
@@ -157,7 +179,14 @@ public class Statistics
                 JOptionPane.showMessageDialog(null, "Message ID not found.");
             }
         } 
-        
+
+    /**
+     * Searches for all messages sent to a particular recipient
+     */
+    public static void search()
+   {
+       
+   }
     /**
      *  Display a report that lists the full details of all the sent messages
      *  Option(6) from the menu
@@ -172,13 +201,14 @@ public class Statistics
             }
             else
             {
-                StringBuilder result = new StringBuilder("Recent Sent Messages:\n\n"); /*Creates a header and prepares 
+                StringBuilder results = new StringBuilder("Recent Sent Messages:\n\n"); /*Creates a header and prepares 
                                                                                 a StringBuilder to hold the message body.*/        
-            for (String msg : sentOnly)
-            {
-                result.append(msg).append("\n\n");
-            }
-            JOptionPane.showMessageDialog(null, result.toString());
+                for (int i = 0; i < sentOnly.length; i++)                   //Enhanced for-each-loop: (String msg : sentOnly)               
+                {
+                    String msg = sentOnly[i];
+                    results.append(msg).append("\n\n");         //Add two newlines as the loops add/appends 'results'
+                }
+            JOptionPane.showMessageDialog(null, results.toString());
         }                               
     }  
 }
@@ -192,7 +222,7 @@ public class Statistics
 a)
 b)
 c)
-d)Search for all messages sent to a particular recipient
+d)
 e)Delete a message using the message hash
 f)
 */
