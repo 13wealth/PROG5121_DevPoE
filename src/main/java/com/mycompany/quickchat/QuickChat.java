@@ -115,8 +115,8 @@ public class QuickChat
             switch(menu)
             {
                 case "1" -> msgObj.sendMessage();         //Full validation is messaging class
-                case "2" -> Messaging.recentMessages();   //Prt.3 Displays a report that lists the full details of all the sent messages                                                     
-                case "3" -> statObj.messageStats(logObj); //Param parsed to return registered fullnames as a sender on case->2
+                case "2" -> Messaging.recentMessages();   //Part.3: Displays a list of recently sent messages
+                case "3" -> statObj.messageStats(logObj); //Part3: Sub-menu that is ran on Statistics class
                 case "4" -> quit = true;
             }
         }
@@ -127,14 +127,4 @@ public class QuickChat
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
 * 
-*/
-
-
-/*
-a)Display sender and recipient of all sent messages
-b)Display longest message
-c)Search for a message ID and display corresponding recipient and message
-d)Search for all messages sent to a particular recipient
-e)Delete a message using the message hash
-f)Display a report that lists the full details of all the sent messages
 */

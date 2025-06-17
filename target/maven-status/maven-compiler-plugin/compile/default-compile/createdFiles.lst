@@ -1,4 +1,5 @@
 com\mycompany\quickchat\Login.class
+com\mycompany\quickchat\Statistics.class
 com\mycompany\quickchat\DialogHelper.class
 com\mycompany\quickchat\Messaging.class
 com\mycompany\quickchat\Registration.class
