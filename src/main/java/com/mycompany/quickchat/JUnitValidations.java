@@ -30,7 +30,7 @@ public class JUnitValidations
     }
 
 
- public static boolean createMessageHash(String messageID, int numMessages, String messageText)
+ public static boolean createMessageHash(String messageID, int numMessages, String messageText) 
     {
         CharSequence idPrefix = messageID.subSequence(0, 2); 
         
