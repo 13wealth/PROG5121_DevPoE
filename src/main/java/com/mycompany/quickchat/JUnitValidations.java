@@ -4,8 +4,13 @@
  */
 package com.mycompany.quickchat;
 
+import static com.mycompany.quickchat.Message.readJSONArray;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -44,4 +49,17 @@ public class JUnitValidations
                                                         lastWord);
         return true;
     }
+ public static List<String> getSentMessages() {
+    List<String> sent = new ArrayList<>();
+
+    JSONArray messages = readJSONArray("allMessages.json", "sentMessages");
+
+    for (int i = 0; i < messages.length(); i++) {
+        JSONObject msg = messages.getJSONObject(i);
+        if ("Sent".equalsIgnoreCase(msg.optString("Flag"))) {
+            sent.add(msg.optString("Sent Message"));
+        }
+    }
+    return sent;
+}
 }
