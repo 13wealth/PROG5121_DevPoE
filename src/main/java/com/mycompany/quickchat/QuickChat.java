@@ -127,4 +127,4 @@ public class QuickChat
 * References:
 * OpenAI. (2025, May 1). *ChatGPT* (Version GPT-4) [Large language model]. https://chat.openai.com/chat 
 * 
-*/
+*/ 
