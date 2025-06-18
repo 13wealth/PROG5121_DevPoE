@@ -26,10 +26,11 @@ public class Registration
         String cellRegex = "^\\+27[1-9]\\d{8}$";
         if(Pattern.matches(cellRegex, cellPhone))
         {
-            int option = JOptionPane.showConfirmDialog(null, 
-                                                        "Cellphone number successfully added.\nContinue?",
-                                                        "SUCCESS",JOptionPane.YES_NO_OPTION,1);
-                    return true;
+            JOptionPane.showMessageDialog(
+                                    null, 
+                                    "Cellphone number successfully added.", 
+                                    "SUCCESS", JOptionPane.INFORMATION_MESSAGE
+            );return true;
         }
         else
         {
@@ -51,9 +52,11 @@ public class Registration
         
         if(Pattern.matches(userNameRegex, username))
         {
-            int option = JOptionPane.showConfirmDialog(null, "Username successfully captured.\nContinue?",
-                                            "SUCCESS",JOptionPane.YES_NO_OPTION,1);         
-                    return true;
+            JOptionPane.showMessageDialog(
+                                    null, 
+                                    "Username successfully added.", 
+                                    "SUCCESS", JOptionPane.INFORMATION_MESSAGE
+            );return true;
         }
         else
         {

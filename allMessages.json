@@ -1,18 +1,10 @@
 {
     "disregardedMessages": [],
-    "sentMessages": [
-        {
-            "Message Hash": "56:1:AFGSDCAFGSDC",
-            "Recipient No": "+27627680710",
-            "Sent Message": "afgsdc",
-            "Message ID": "5637216960"
-        },
-        {
-            "Message Hash": "22:3:ASDSADSAASDSADSA",
-            "Recipient No": "+27627680711",
-            "Sent Message": "asdsadsa",
-            "Message ID": "2290532954"
-        }
-    ],
+    "sentMessages": [{
+        "Message Hash": "89:1:ADSDADSD",
+        "Recipient No": "+27627680710",
+        "Sent Message": "ADSD",
+        "Message ID": "8927933883"
+    }],
     "storedMessages": []
 }

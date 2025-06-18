@@ -4,7 +4,8 @@
 
 package com.mycompany.quickchat;
 
-import javax.swing.JOptionPane;
+import java.awt.GridLayout;
+import javax.swing.*;
 
 /**
  *
@@ -13,110 +14,147 @@ import javax.swing.JOptionPane;
 public class QuickChat 
 {
     public static void main(String[] args) 
-    {      
+    {
         Registration regObj = new Registration();
-        
-//1. Registration code, takes name & surname, cellphone, username and password inputs   
-    //1.1. Name and Surname registration
-        String regName,regSurname;
-    
-            regName = JOptionPane.showInputDialog(null, "Please enter your registration details.\nName:",
-                                                        "WELCOME TO QUICK-CHAT", JOptionPane.QUESTION_MESSAGE);  
-                DialogHelper.exitIfCancelled(regName);
- 
-            regSurname = JOptionPane.showInputDialog(null, "Surname",
-                                                        "WELCOME TO QUICK-CHAT",3);
-                DialogHelper.exitIfCancelled(regSurname);
-                
-    //2.1. Cellphone number registration
-        String cellNumber;
-        boolean isPhoneValid = false;
-        
-        do
-        {
-            cellNumber = JOptionPane.showInputDialog(null, """
-                                                           Must contain the country code
-                                                           Must be a valid South African cellphone number""",
-                                                        "INPUT CELLPHONE NUMBER",3);
-                DialogHelper.exitIfCancelled(cellNumber);
-            isPhoneValid = regObj.checkCellPhoneNumber(cellNumber.trim());
-        }while (!isPhoneValid);                                         /*While the value is not valid, the statement  
-                                                                     in the loop-body continue to execute*/
-    //3.1. Username registration
-        String regUser;
-        boolean isUserValid = false;
-        
-        do
-        {
-            regUser = JOptionPane.showInputDialog(null, """
-                                                           Must contain an underscore
-                                                           Must not be longer than 5 characters""",
-                                                        "INPUT USERNAME",3);
-                DialogHelper.exitIfCancelled(regUser);
-            isUserValid = regObj.checkUserName(regUser);
-        }while (!isUserValid); 
-        
-    //4.1. Password registration 
-        String regPass;
-        boolean isPassValid = false;
-        
-        do
-        {   regPass = JOptionPane.showInputDialog(null, """
-                                                           The Password must contain:
-                                                            -At least 8 characters long 
-                                                            -At least one uppercase letter 
-                                                            -At least one lowercase letter
-                                                            -At least one number
-                                                            -At least one special character""",
-                                                        "INPUT PASSWORD",3);
-                DialogHelper.exitIfCancelled(regPass);
-            isPassValid = regObj.checkPassWordComplexity(regPass);
-        }while (!isPassValid);
-        
-//2. Login
-        String logUser, logPass;       
-        boolean loginSuccess = false;
         Login logObj = new Login();
-                
-            JOptionPane.showMessageDialog(null,"Enter your login details",
-                                            "WELCOME TO QUICK-CHAT",JOptionPane.INFORMATION_MESSAGE);
-        do
-        {   
-          //The object passes and stores the inputs in a constructor method in Login class
-            logObj.registerUser(regName, regSurname,regUser,regPass);                       
-                                                                          
-                logUser = JOptionPane.showInputDialog(null, "Username:",
-                                                        "LOGIN", JOptionPane.QUESTION_MESSAGE); 
-                    DialogHelper.exitIfCancelled(logUser);
-                logPass = JOptionPane.showInputDialog(null, "Password:",
-                                                "LOGIN", JOptionPane.QUESTION_MESSAGE);
-                    DialogHelper.exitIfCancelled(logPass);
-            loginSuccess = logObj.loginUser(logUser, logPass);                                                                            
-        }while (!loginSuccess);                                                                        
 
-//3. Messaging  
-        boolean quit = false;
-        Messaging msgObj = new Messaging(); 
-        Statistics statObj = new Statistics();
-                
-            JOptionPane.showMessageDialog(null,"Welcome to QuickChat",
-                                        " ",JOptionPane.INFORMATION_MESSAGE);
-        while(!quit)
+        JTextField nameField = new JTextField();
+        JTextField surnameField = new JTextField();
+        JTextField cellphoneField = new JTextField();
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+
+            String regName = "", 
+            regSurname = "", 
+            cellNumber = "", 
+            regUser = "", regPass = "";
+            boolean validRegistration = false;
+
+//Registration loop
+        while (!validRegistration) 
         {
-           String menu = JOptionPane.showInputDialog("""
-                                               SELECT AN OPTION
-                                               (1) Send Message
-                                               (2) Show recent messages
-                                               (3) View Statistics      
-                                               (4) Quit
-                                               """);
-                                             DialogHelper.exitIfCancelled(menu);
-      
-            switch(menu)
+            JPanel regPanel = new JPanel(new GridLayout(0, 1));
+            regPanel.add(new JLabel("Name:"));
+            regPanel.add(nameField);
+            regPanel.add(new JLabel("Surname:"));
+            regPanel.add(surnameField);
+            regPanel.add(new JLabel("Cellphone"));
+            regPanel.add(cellphoneField);
+            regPanel.add(new JLabel("Username"));
+            regPanel.add(usernameField);
+            regPanel.add(new JLabel("Password"));
+            regPanel.add(passwordField);
+
+            int result = JOptionPane.showConfirmDialog(
+                                                null,
+                                                regPanel,
+                                                "QUICK-CHAT REGISTRATION",
+                                                JOptionPane.OK_CANCEL_OPTION,
+                                                JOptionPane.PLAIN_MESSAGE
+                );
+            if (result == JOptionPane.OK_OPTION) 
             {
-                case "1" -> msgObj.sendMessage();         //Full validation is messaging class
-                case "2" -> Messaging.recentMessages();   //Part.3: Displays a list of recently sent messages
-                case "3" -> statObj.messageStats(logObj); //Part3: Sub-menu that is ran on Statistics class
+                regName = nameField.getText().trim();
+                regSurname = surnameField.getText().trim();
+                cellNumber = cellphoneField.getText().trim();
+                regUser = usernameField.getText().trim();
+                regPass = new String(passwordField.getPassword());
+
+                boolean validName = !regName.isEmpty() && !regSurname.isEmpty();
+                boolean validCell = regObj.checkCellPhoneNumber(cellNumber);
+                boolean validUser = regObj.checkUserName(regUser);
+                boolean validPass = regObj.checkPassWordComplexity(regPass);
+
+                    if (!validName || !validCell || !validUser || !validPass) 
+                    {
+                        JOptionPane.showMessageDialog(null, """
+                                One or more fields are invalid. Please fix:
+                                - Name/Surname must not be empty
+                                - Cellphone must be a valid SA number with country code
+                                - Username must contain "_" and be 5 chars max
+                                - Password must meet complexity requirements
+                                """, "INVALID DETAILS", JOptionPane.WARNING_MESSAGE);
+                    } 
+                    else 
+                    {
+                        JOptionPane.showMessageDialog(null, "🎉 Registration Successful!");
+                            validRegistration = true;
+                                logObj.registerUser(regName, regSurname, regUser, regPass);
+                    }
+            }
+            else 
+            {
+                JOptionPane.showMessageDialog(null, "Registration Cancelled.");
+                    System.exit(0);
+            }
+        }
+
+//Login loop
+        boolean loginSuccess = false;
+        String logUser, logPass;
+
+        JOptionPane.showMessageDialog(
+                                null, 
+                                "Enter your login details", 
+                                "WELCOME TO QUICK-CHAT", 
+                                JOptionPane.INFORMATION_MESSAGE
+             );
+        do 
+        {
+            logUser = JOptionPane.showInputDialog(
+                                            null, 
+                                            "Username:", 
+                                            "LOGIN", 
+                                            JOptionPane.QUESTION_MESSAGE);
+                             DialogHelper.exitIfCancelled(logUser);
+
+            logPass = JOptionPane.showInputDialog(
+                                            null, 
+                                            "Password:", 
+                                            "LOGIN", 
+                                            JOptionPane.QUESTION_MESSAGE);
+                            DialogHelper.exitIfCancelled(logPass);
+
+            loginSuccess = logObj.loginUser(logUser.trim(), logPass.trim());
+
+                if (!loginSuccess) 
+                {
+                    JOptionPane.showMessageDialog(
+                                            null, 
+                                            "Login failed. Please try again.", 
+                                            "ERROR", 
+                                            JOptionPane.ERROR_MESSAGE);
+                } 
+                else 
+                {
+                    JOptionPane.showMessageDialog(
+                                            null, 
+                                            "Login Successful!", 
+                                            "WELCOME", 
+                                            JOptionPane.INFORMATION_MESSAGE);
+                }
+        } while (!loginSuccess);
+
+//Main menu
+        boolean quit = false;
+        Messaging msgObj = new Messaging();
+        Statistics statObj = new Statistics();
+
+        JOptionPane.showMessageDialog(null, "Welcome to QuickChat", " ", JOptionPane.INFORMATION_MESSAGE);
+        while (!quit) {
+            String menu = JOptionPane.showInputDialog("""
+                    SELECT AN OPTION
+                    (1) Send Message
+                    (2) Show recent messages
+                    (3) View Statistics
+                    (4) Quit
+                    """);
+            DialogHelper.exitIfCancelled(menu);
+
+            switch (menu) {
+                case "1" -> msgObj.sendMessage();
+                case "2" -> Messaging.recentMessages();
+                case "3" -> statObj.messageStats(logObj);
                 case "4" -> quit = true;
             }
         }
