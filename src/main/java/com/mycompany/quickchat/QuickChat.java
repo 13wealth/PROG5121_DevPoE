@@ -5,7 +5,12 @@
 package com.mycompany.quickchat;
 
 import java.awt.GridLayout;
-import javax.swing.*;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -141,7 +146,8 @@ public class QuickChat
         Statistics statObj = new Statistics();
 
         JOptionPane.showMessageDialog(null, "Welcome to QuickChat", " ", JOptionPane.INFORMATION_MESSAGE);
-        while (!quit) {
+        while (!quit) 
+        {
             String menu = JOptionPane.showInputDialog("""
                     SELECT AN OPTION
                     (1) Send Message
@@ -151,7 +157,8 @@ public class QuickChat
                     """);
             DialogHelper.exitIfCancelled(menu);
 
-            switch (menu) {
+            switch (menu) 
+            {
                 case "1" -> msgObj.sendMessage();
                 case "2" -> Messaging.recentMessages();
                 case "3" -> statObj.messageStats(logObj);
