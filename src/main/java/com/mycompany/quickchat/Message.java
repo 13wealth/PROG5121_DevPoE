@@ -12,15 +12,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author RC_Student_lab 
+ * The class runs the sub-menu in the main method and creates messageID and messageHash.
+ * Also validates what the three buttons do.
+ * Stores and reads messages in the JSON file.
  *
  */
 public class Message
@@ -144,7 +148,7 @@ public class Message
                         {
                             JOptionPane.showMessageDialog(null, 
                                                      "Please enter a message of less than 250 characters"); 
-                                continue;                       //Loops user back to retype instead of reseting the text 
+                                //continue;                       //Loops user back to retype instead of reseting the text 
                         }
                         else
                         {
