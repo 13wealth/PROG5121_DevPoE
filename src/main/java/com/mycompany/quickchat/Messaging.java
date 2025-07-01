@@ -4,7 +4,8 @@
  */
 package com.mycompany.quickchat;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 
 /**
@@ -31,18 +32,18 @@ public class Messaging
             String input = JOptionPane.showInputDialog(null, 
                 "Please enter number of messages you want to send:");           
 
-                if (input == null)                  //If user cancels or closes the dialog box
+                if (input == null)                              //If user cancels or closes the dialog box
                 {
                     JOptionPane.showMessageDialog(null, "Cancelled. Returning to menu.");
                         return;
                 }
-                    if (input.matches("\\d+")) //Checks if input is only digits (0-9)
+                    if (input.matches("\\d+"))                  //Checks if input is only digits (0-9)
                     { 
                         messageLimit = Integer.parseInt(input); /*Convert String input to an int and assign
                                                                     it to messageLimit variable and update memory*/
-                        if (messageLimit > 0)       //Checks if input is positive digits
+                        if (messageLimit > 0)                   //Checks if input is positive digits
                         {
-                            break;                  //Breaks from the loop if both IF statements are true
+                            break;                              //Breaks from the loop if both IF statements are true
                         } 
                         else 
                         {
@@ -55,7 +56,7 @@ public class Messaging
                         JOptionPane.showMessageDialog(null, 
                                             "Invalid input. Only whole numbers allowed.");
                     }
-            }
+                }
 
         String[] recipientNum = new String[messageLimit];    
         String[] chat = new String[messageLimit];

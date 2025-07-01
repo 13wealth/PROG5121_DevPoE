@@ -4,13 +4,14 @@
  */
 package com.mycompany.quickchat;
 
-import static com.mycompany.quickchat.Message.readJSONArray;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import static com.mycompany.quickchat.Message.readJSONArray;
 
 /**
  *
@@ -20,7 +21,8 @@ public class JUnitValidations
 {
     public static boolean validateMessageLength(String text) 
      {
-        if (text.length() > 250) {
+        if (text.length() > 250) 
+        {
             return true;
         } else {
             return false;

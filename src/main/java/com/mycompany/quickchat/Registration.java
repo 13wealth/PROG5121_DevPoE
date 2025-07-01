@@ -4,7 +4,8 @@
  */
 package com.mycompany.quickchat;
 
-import java.util.regex.*;
+import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -24,22 +25,9 @@ public class Registration
     public boolean checkCellPhoneNumber(String cellPhone)
     {
         String cellRegex = "^\\+27[1-9]\\d{8}$";
-        if(Pattern.matches(cellRegex, cellPhone))
-        {
-            JOptionPane.showMessageDialog(
-                                    null, 
-                                    "Cellphone number successfully added.", 
-                                    "SUCCESS", JOptionPane.INFORMATION_MESSAGE
-            );return true;
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, 
-                                "Cellphone number incorrectly formatted or does not contain international code.",
-                                "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-                    return false;
-        }
+        return Pattern.matches(cellRegex, cellPhone);
     }
+    
     /**
      * Method to validate username
      * Ensures the username contains an underscore and is max 5 characters
@@ -49,23 +37,7 @@ public class Registration
     public boolean checkUserName(String username)
     {
         String userNameRegex = "^(?=.*_)[a-zA-Z0-9_]{1,5}$";                                      
-        
-        if(Pattern.matches(userNameRegex, username))
-        {
-            JOptionPane.showMessageDialog(
-                                    null, 
-                                    "Username successfully added.", 
-                                    "SUCCESS", JOptionPane.INFORMATION_MESSAGE
-            );return true;
-        }
-        else
-        {
-             JOptionPane.showMessageDialog(null, 
-                    "Please make sure that your username contains an unserscore and is no more than five characters in length.",
-                    "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-
-            return false;
-        }
+        return Pattern.matches(userNameRegex, username);
     }
 
     /**
@@ -77,24 +49,55 @@ public class Registration
     public boolean checkPassWordComplexity(String password)       
     {
         String passWordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\W_]).{8,}$";
-        if(Pattern.matches(passWordRegex, password))
-            {
-                JOptionPane.showMessageDialog(null, "Password successfully captured",
-                                                "REGISTRATION COMPLETE!",JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-            }
-            else
-            {
-                 JOptionPane.showMessageDialog(null, 
-                                                """
-                                                     Password is not correctly formatted. 
-                                                     Please ensure that the password contains:
-                                                     -At least eight characters
-                                                     -A capital letter
-                                                     -A number and a special character.""",
-                                                "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);
-                return false;
+        return Pattern.matches(passWordRegex, password);
+    }
+
+    /**
+     * Method to validate all inputs and displays all results on the GUI
+     * @param cellphone
+     * @param username
+     * @param password
+     */
+    public void validateInputs(String cellphone, String username, String password)
+    {
+        StringBuilder successMsg = new StringBuilder("SUCCESSFUL: \n");
+        StringBuilder errorMsg = new StringBuilder("UNSUCCESSFUL: \n");
+
+        if (checkCellPhoneNumber(cellphone)) 
+        {
+            successMsg.append("- Cellphone number added.\n");
+        } else {
+            errorMsg.append("""
+                            - Invalid cellphone number. 
+                                • Must start with +27 and be followed by 9 digits.
+                                • Example: +27123456789\n
+                            """);
         }
+
+        if (checkUserName(username)) 
+        {
+            successMsg.append("- Username added.\n");
+        } else {
+            errorMsg.append("""
+                            - Invalid username.
+                                • Must contain an underscore and be 1-5 characters long.
+                                • Example: user_1\n
+                            """);
+        }
+
+        if (checkPassWordComplexity(password)) 
+        {
+            successMsg.append("- Password added.\n");
+        } else {
+            errorMsg.append("""
+                            - Invalid password.
+                                • Must be at least 8 characters long.
+                                • Contain uppercase, number, and special character.
+                                • Example: Passw0rd!
+                            """);
+        }
+            JOptionPane.showMessageDialog(null, successMsg.toString() + "\n" + errorMsg.toString(), 
+                                        "VALIDATION RESULTS", JOptionPane.INFORMATION_MESSAGE);
     }
 }
 
