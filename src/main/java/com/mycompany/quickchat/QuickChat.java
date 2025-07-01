@@ -32,7 +32,8 @@ public class QuickChat
             String regName = "", 
             regSurname = "", 
             cellNumber = "", 
-            regUser = "", regPass = "";
+            regUser = "", 
+            regPass = "";
             boolean validRegistration = false;
 
 //Registration loop
@@ -53,10 +54,11 @@ public class QuickChat
             int result = JOptionPane.showConfirmDialog(
                                                 null,
                                                 regPanel,
-                                                "QUICK-CHAT REGISTRATION",
+                                                "QUICK-CHAT REGISTRATION<b>",
                                                 JOptionPane.OK_CANCEL_OPTION,
                                                 JOptionPane.PLAIN_MESSAGE
                 );
+            
             if (result == JOptionPane.OK_OPTION) 
             {
                 regName = nameField.getText().trim();
@@ -65,20 +67,13 @@ public class QuickChat
                 regUser = usernameField.getText().trim();
                 regPass = new String(passwordField.getPassword());
 
-                boolean validName = !regName.isEmpty() && !regSurname.isEmpty();
                 boolean validCell = regObj.checkCellPhoneNumber(cellNumber);
                 boolean validUser = regObj.checkUserName(regUser);
                 boolean validPass = regObj.checkPassWordComplexity(regPass);
 
-                    if (!validName || !validCell || !validUser || !validPass) 
+                    if (!validCell || !validUser || !validPass) 
                     {
-                        JOptionPane.showMessageDialog(null, """
-                                One or more fields are invalid. Please fix:
-                                - Name/Surname must not be empty
-                                - Cellphone must be a valid SA number with country code
-                                - Username must contain "_" and be 5 chars max
-                                - Password must meet complexity requirements
-                                """, "INVALID DETAILS", JOptionPane.WARNING_MESSAGE);
+                       regObj.validateInputs(cellNumber, regUser, regPass);
                     } 
                     else 
                     {
@@ -161,7 +156,7 @@ public class QuickChat
             {
                 case "1" -> msgObj.sendMessage();
                 case "2" -> Messaging.recentMessages();
-                case "3" -> statObj.messageStats(logObj);
+                case "3" -> statObj.messageStats(logObj);  
                 case "4" -> quit = true;
             }
         }
