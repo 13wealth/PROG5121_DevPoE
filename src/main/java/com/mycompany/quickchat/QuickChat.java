@@ -29,12 +29,12 @@ public class QuickChat
         JTextField usernameField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
 
-            String regName = "", 
-            regSurname = "", 
-            cellNumber = "", 
-            regUser = "", 
-            regPass = "";
-            boolean validRegistration = false;
+        String regName;
+        String regSurname;
+        String cellNumber;
+        String regUser;
+        String regPass;
+        boolean validRegistration = false;
 
 //Registration loop
         while (!validRegistration) 
@@ -79,7 +79,8 @@ public class QuickChat
                     {
                         JOptionPane.showMessageDialog(null, "🎉 Registration Successful!");
                             validRegistration = true;
-                                logObj.registerUser(regName, regSurname, regUser, regPass);
+                            
+                      logObj.registerUser(regName, regSurname, regUser, regPass);
                     }
             }
             else 
@@ -116,28 +117,11 @@ public class QuickChat
                             DialogHelper.exitIfCancelled(logPass);
 
             loginSuccess = logObj.loginUser(logUser.trim(), logPass.trim());
-
-                if (!loginSuccess) 
-                {
-                    JOptionPane.showMessageDialog(
-                                            null, 
-                                            "Login failed. Please try again.", 
-                                            "ERROR", 
-                                            JOptionPane.ERROR_MESSAGE);
-                } 
-                else 
-                {
-                    JOptionPane.showMessageDialog(
-                                            null, 
-                                            "Login Successful!", 
-                                            "WELCOME", 
-                                            JOptionPane.INFORMATION_MESSAGE);
-                }
         } while (!loginSuccess);
 
 //Main menu
         boolean quit = false;
-        Messaging msgObj = new Messaging();
+        Messaging msgObj = new Messaging();             //Declares the object_Messaging msgObj and creates it_new Messaging(); 
         Statistics statObj = new Statistics();
 
         JOptionPane.showMessageDialog(null, "Welcome to QuickChat", " ", JOptionPane.INFORMATION_MESSAGE);
@@ -150,7 +134,7 @@ public class QuickChat
                     (3) View Statistics
                     (4) Quit
                     """);
-            DialogHelper.exitIfCancelled(menu);
+                DialogHelper.exitIfCancelled(menu);
 
             switch (menu) 
             {
@@ -158,6 +142,7 @@ public class QuickChat
                 case "2" -> Messaging.recentMessages();
                 case "3" -> statObj.messageStats(logObj);  
                 case "4" -> quit = true;
+                default -> JOptionPane.showMessageDialog(null, "Invalid option. Please try again.");
             }
         }
     }

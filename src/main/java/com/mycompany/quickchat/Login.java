@@ -49,14 +49,14 @@ public class Login
         {  
             JOptionPane.showMessageDialog(null, "Welcome " + registeredName + " " + registeredSurname  +
                                                 ", " + "it is great to see you again!",
-                                                "SUCCESS",JOptionPane.INFORMATION_MESSAGE);
+                                                "LOGIN SUCCESSFUL",JOptionPane.INFORMATION_MESSAGE);
                 return true;
  
             }
             else
             {
                   JOptionPane.showMessageDialog(null, "Username or password incorrect, please try again.",
-                                                "UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);    
+                                                "LOGIN UNSUCCESSFUL",JOptionPane.ERROR_MESSAGE);    
                 return false;
         }    
     }
