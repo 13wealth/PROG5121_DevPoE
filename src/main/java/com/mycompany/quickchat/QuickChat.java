@@ -124,7 +124,7 @@ public class QuickChat
         Messaging msgObj = new Messaging();             //Declares the object_Messaging msgObj and creates it_new Messaging(); 
         Statistics statObj = new Statistics();
 
-        JOptionPane.showMessageDialog(null, "Welcome to QuickChat", " ", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null, "Welcome to QuickChat", " ", JOptionPane.INFORMATION_MESSAGE);
         while (!quit) 
         {
             String menu = JOptionPane.showInputDialog("""

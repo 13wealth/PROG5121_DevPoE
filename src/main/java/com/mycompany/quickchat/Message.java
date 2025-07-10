@@ -197,6 +197,29 @@ public class Message
         }
 
     /**
+     * Prints a list of messages that were sent and prints the total of those messages
+     * Assisted by ChatGPT (2025, May 27) to assist with appending results
+     */
+    public static void sentMessageReport() 
+    {
+        StringBuilder allMessages = new StringBuilder();
+
+        if (sentMessages.isEmpty()) 
+        {
+        allMessages.append("No messages have been sent yet.");
+        } else {
+
+            for (int i = 0; i < sentMessages.size(); i++) 
+            {
+                allMessages.append((i + 1)).append(". ").append(sentMessages.get(i)).append("\n");
+            }
+                allMessages.append("\nTotal messages sent: ").append(sentMessages.size());
+        }
+        JOptionPane.showMessageDialog(null, allMessages.toString(),
+                                        "Sent Messages & Statistics", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
      * Prints a list of messages that were sent as the program was running
      * Assisted by ChatGPT (2025, May 27) to assist with appending results
      */
@@ -212,17 +235,7 @@ public class Message
     JOptionPane.showMessageDialog(null, allMessages.toString(), 
                                     "All Sent Messages", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    /**
-     * Returns total number of messages sent while program was running
-     * @return
-     */
-    public static int returnTotalMessages()
-    {
-        JOptionPane.showMessageDialog(null, "Total messages sent: " + sentMessages.size());
-        return sentMessages.size();
-    }     
-            
+      
     /**
      * Stores ALL message details in JSON file once all have been sent, stored or disregarded
      * Assisted by ChatGPT (2025, May 26) to create JSON dependency/import and method
@@ -357,11 +370,11 @@ public class Message
         try 
         {
             String data = new String(Files.readAllBytes(Paths.get(filename)));//Reads a file and pass it to a String
-            JSONObject root = new JSONObject(data);                                   //Converts the string into a JSONObject
+            JSONObject root = new JSONObject(data);                           //Converts the string into a JSONObject
 
                 if (root.has(arrayKey)) 
                 {
-                    return root.getJSONArray(arrayKey);                     //Returns the array if it was found in the json keys
+                    return root.getJSONArray(arrayKey);                      //Returns the array if it was found in the json keys
                 } 
                 else 
                 {

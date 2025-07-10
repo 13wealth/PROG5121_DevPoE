@@ -1,42 +1,18 @@
 {
-    "disregardedMessages": [{
-        "Message Hash": "60:3:AGDHDFDSFSAFSDFAGDHDFDSFSAFSDF",
-        "Recipient No": "+27627680710",
-        "Sent Message": "agdhdfdsfsafsdf",
-        "Message ID": "6010262718"
-    }],
+    "disregardedMessages": [],
     "sentMessages": [
         {
-            "Message Hash": "93:1:AXASCSADDSASASAAXASCSADDSASASA",
+            "Message Hash": "18:1:FIRSTMESSAGE",
             "Recipient No": "+27627680710",
-            "Sent Message": "Axascsaddsasasa",
-            "Message ID": "9379278087"
+            "Sent Message": "First message\n",
+            "Message ID": "1835910122"
         },
         {
-            "Message Hash": "16:1:ASSFAEGDSCAHKJLJK.ASSFAEGDSCAHKJLJK.",
+            "Message Hash": "57:2:SECONDMESSAGE",
             "Recipient No": "+27627680710",
-            "Sent Message": "assfaegdscahkjljk.",
-            "Message ID": "1689760160"
-        },
-        {
-            "Message Hash": "44:3:SAFDGFDGNFVDSXSAFDGFDGNFVDSX",
-            "Recipient No": "+27627680710",
-            "Sent Message": "SAFDGFDGNFVDSX",
-            "Message ID": "4459206255"
+            "Sent Message": "Second message",
+            "Message ID": "5798548699"
         }
     ],
-    "storedMessages": [
-        {
-            "Message Hash": "21:2:SAFSAFDSCASSAFSAFDSCAS",
-            "Recipient No": "+27627680710",
-            "Sent Message": "safsafdscas",
-            "Message ID": "2115145067"
-        },
-        {
-            "Message Hash": "44:2:ASFDSFDSFASDFSAASFDSFDSFASDFSA",
-            "Recipient No": "+27627680710",
-            "Sent Message": "ASFDSFDSFASDFSA",
-            "Message ID": "4495295693"
-        }
-    ]
+    "storedMessages": []
 }

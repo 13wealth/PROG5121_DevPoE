@@ -228,11 +228,11 @@ public class Statistics
         StringBuilder results = new StringBuilder("Message(s) sent to " + recipient + ":\n\n");
             boolean found = false;                                          //A flag to track if any matching messages are found
 
-        for (int i = 0; i < messages.length(); i++)             //Loops through every message object in the sentMessages array.
+        for (Object Obj : messages)             //For-each-Loops through every message object in the sentMessages array.
         {
-            JSONObject msg = messages.getJSONObject(i);
+            JSONObject msg = (JSONObject) Obj;
 
-                if (msg.optString("Recipient No").equalsIgnoreCase(recipient)) //Checks number in the array with the input
+                if (recipient.equalsIgnoreCase(msg.optString("Recipient No"))) //Checks number in the array with the input
                 {
                     results.append("Message: ").append(msg.optString("Sent Message")).append("\n");
                             found = true;
