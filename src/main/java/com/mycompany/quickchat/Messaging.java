@@ -3,9 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.quickchat;
-
 import javax.swing.JOptionPane;
-
 import org.json.JSONArray;
 
 /**
@@ -66,8 +64,9 @@ public class Messaging
             recipientNum[i] = Message.checkRecipientCell();          //Uses regex to check recipient cellphone number input
             chat[i] = Message.sentMessage((i + 1), recipientNum[i]); //Create and evironment to type and send the message
         }
-            Message.printSentMessages();                             //Prints a list of messeges a user has sent
-            Message.returnTotalMessages();                           //Prints a total number of messages a user has sent
+            //Message.printSentMessages();                             //Prints a list of messeges a user has sent
+            //Message.returnTotalMessages(); 
+            Message.sentMessageReport();                          //Prints a total number of messages a user has sent
             Message.savedMessages(
                               Message.sentIDs,
                               Message.sentHashes,
