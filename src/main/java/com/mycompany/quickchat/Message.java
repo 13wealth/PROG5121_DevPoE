@@ -12,11 +12,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -20,7 +20,14 @@ public class QuickChat
 {
     public static void main(String[] args) 
     {
-        Registration regObj = new Registration();
+        String regName;
+        String regSurname;
+        String cellNumber;
+        String regUser;
+        String regPass;
+        boolean validRegistration = false;
+
+        RegiValidation regObj = new RegiValidation();
         Login logObj = new Login();
 
         JTextField nameField = new JTextField();
@@ -28,13 +35,6 @@ public class QuickChat
         JTextField cellphoneField = new JTextField();
         JTextField usernameField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
-
-        String regName;
-        String regSurname;
-        String cellNumber;
-        String regUser;
-        String regPass;
-        boolean validRegistration = false;
 
 //Registration loop
         while (!validRegistration) 
@@ -54,7 +54,7 @@ public class QuickChat
             int result = JOptionPane.showConfirmDialog(
                                                 null,
                                                 regPanel,
-                                                "QUICK-CHAT REGISTRATION<b>",
+                                                "QUICK-CHAT REGISTRATION",
                                                 JOptionPane.OK_CANCEL_OPTION,
                                                 JOptionPane.PLAIN_MESSAGE
                 );

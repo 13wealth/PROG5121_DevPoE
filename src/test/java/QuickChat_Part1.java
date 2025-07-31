@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
 
-import com.mycompany.quickchat.Registration;
+import com.mycompany.quickchat.RegiValidation;
 import com.mycompany.quickchat.Login;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuickChat_Part1
 {
-    Registration regTest_Obj = new Registration();
+    RegiValidation regTest_Obj = new RegiValidation();
     Login logTest_Obj = new Login();
 
     
