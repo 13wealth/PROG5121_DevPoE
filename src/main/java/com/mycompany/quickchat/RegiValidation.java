@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * This feature validates the user's input using regex pattern when registering.
  * Regular expression was assisted by ChatGPT (2025, April 8) for improved validation.
  */
-public class Registration 
+public class RegiValidation 
 {
     /**
      * Method to validate cellphone number

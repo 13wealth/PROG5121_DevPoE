@@ -1,18 +1,10 @@
 {
     "disregardedMessages": [],
-    "sentMessages": [
-        {
-            "Message Hash": "18:1:FIRSTMESSAGE",
-            "Recipient No": "+27627680710",
-            "Sent Message": "First message\n",
-            "Message ID": "1835910122"
-        },
-        {
-            "Message Hash": "57:2:SECONDMESSAGE",
-            "Recipient No": "+27627680710",
-            "Sent Message": "Second message",
-            "Message ID": "5798548699"
-        }
-    ],
+    "sentMessages": [{
+        "Message Hash": "38:1:PEAKG-O]RESY[ALDF\\[PALSD[P\\GERS;LHSTR;LH=SRLTPEAKG-O]RESY[ALDF\\[PALSD[P\\GERS;LHSTR;LH=SRLT",
+        "Recipient No": "+27627680710",
+        "Sent Message": "peakg-o]resy[aldf\\[palsd[p\\gers;lhstr;lh=srlt",
+        "Message ID": "3855318533"
+    }],
     "storedMessages": []
 }
