@@ -5,8 +5,11 @@
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -104,7 +107,8 @@ public class QuickChat_Part3
 
 
 
-    // TODO add test methods here.
+    // The methods in this class are unit tests for a chat application.
+    // Each method tests a specific functionality of the application.
     // The methods must be annotated with annotation @Test. For example:
     //
     // @Test

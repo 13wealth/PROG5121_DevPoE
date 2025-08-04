@@ -58,8 +58,8 @@ public class QuickChat
                                                 JOptionPane.OK_CANCEL_OPTION,
                                                 JOptionPane.PLAIN_MESSAGE
                 );
-            
-            if (result == JOptionPane.OK_OPTION) 
+
+            if (result == JOptionPane.OK_OPTION)                               //User clicked OK
             {
                 regName = nameField.getText().trim();
                 regSurname = surnameField.getText().trim();
@@ -71,7 +71,7 @@ public class QuickChat
                 boolean validUser = regObj.checkUserName(regUser);
                 boolean validPass = regObj.checkPassWordComplexity(regPass);
 
-                    if (!validCell || !validUser || !validPass) 
+                    if (!validCell || !validUser || !validPass)                 //Validation failed
                     {
                        regObj.validateInputs(cellNumber, regUser, regPass);
                     } 
